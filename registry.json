@@ -372,6 +372,86 @@
       "categories": ["textarea", "input", "text", "anime", "animation"],
       "files": [{ "path": "textarea/textarea.js", "type": "registry:file", "target": "~/public/sakuga-vfx/textarea.js" }],
       "docs": "Load /sakuga-vfx/textarea.js with a script tag, then use <sakuga-textarea label=\"Notes\" rows=\"4\" maxlength=\"200\"></sakuga-textarea>."
+    },
+    {
+      "name": "select",
+      "type": "registry:file",
+      "title": "Sakuga Select",
+      "description": "Tactile, searchable manga dropdown combobox with a spring-animated speech-bubble popover, velocity-stretched highlight capsule, hollow カチッ selection hit, and slash-to-clear beat. One file, no dependencies, defines <sakuga-select>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["select", "combobox", "dropdown", "input", "anime", "animation"],
+      "files": [{ "path": "select/select.js", "type": "registry:file", "target": "~/public/sakuga-vfx/select.js" }],
+      "docs": "Load /sakuga-vfx/select.js with a script tag, then use <sakuga-select searchable clearable label=\"Style\"><option value=\"cel\">Cel Shaded</option>...</sakuga-select>. Works in forms with a name."
+    },
+    {
+      "name": "drawer",
+      "type": "registry:file",
+      "title": "Sakuga Drawer",
+      "description": "Anime skid-in manga slide-over drawer (right, left, or bottom) with velocity-coupled smear, seam braking dust puffs, wobble marks, pink corner ticks, dotted ズザッ, and danger mode with caution stripe, back-layer burst, shards, and hollow ドン. One file, no dependencies, defines <sakuga-drawer>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["drawer", "sheet", "modal", "overlay", "anime", "animation"],
+      "files": [{ "path": "drawer/drawer.js", "type": "registry:file", "target": "~/public/sakuga-vfx/drawer.js" }],
+      "docs": "Load /sakuga-vfx/drawer.js with a script tag, then use <sakuga-drawer side=\"right\" heading=\"Inspector\">...</sakuga-drawer> and call el.show() / el.close()."
+    },
+    {
+      "name": "menu",
+      "type": "registry:file",
+      "title": "Sakuga Menu",
+      "description": "Triggered manga action and context menu with a spring speech-bubble panel, cel-shaded sliding highlight, keyboard shortcuts, checkable items, dividers, and an anime slash for danger actions. One file, no dependencies, defines <sakuga-menu>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["menu", "dropdown", "context-menu", "navigation", "anime", "animation"],
+      "files": [{ "path": "menu/menu.js", "type": "registry:file", "target": "~/public/sakuga-vfx/menu.js" }],
+      "docs": "Load /sakuga-vfx/menu.js with a script tag, then use <sakuga-menu label=\"Actions\"><option value=\"edit\" data-icon=\"edit\" data-shortcut=\"⌘E\">Edit</option>...</sakuga-menu>. Supports openAt(x, y) and fires select."
+    },
+    {
+      "name": "upload",
+      "type": "registry:file",
+      "title": "Sakuga Upload",
+      "description": "Manga-framed drag-and-drop file dropzone and animated file queue with drag-over wind anticipation, back-layer drop burst, cel-shaded extension chips, and anime slash-to-remove. One file, no dependencies, defines <sakuga-upload>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["upload", "file", "dropzone", "input", "anime", "animation"],
+      "files": [{ "path": "upload/upload.js", "type": "registry:file", "target": "~/public/sakuga-vfx/upload.js" }],
+      "docs": "Load /sakuga-vfx/upload.js with a script tag, then use <sakuga-upload multiple accept=\"image/*,.pdf\" max-size=\"5MB\"></sakuga-upload>. Works in forms with a name; fires change and sakuga:reject."
+    },
+    {
+      "name": "tags",
+      "type": "registry:file",
+      "title": "Sakuga Tags",
+      "description": "Interactive manga tag / chip input box where typing kicks up caret dust, adding stamps a cel-shaded chip with hollow ポン, deleting slices it with a pink crescent slash, and duplicates or max-limit hits play spring recoil. One file, no dependencies, defines <sakuga-tags>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["tags", "chips", "input", "form", "anime", "animation"],
+      "files": [{ "path": "tags/tags.js", "type": "registry:file", "target": "~/public/sakuga-vfx/tags.js" }],
+      "docs": "Load /sakuga-vfx/tags.js with a script tag, then use <sakuga-tags value=\"sakuga,cel-shaded\" max=\"6\" suggestions=\"smear,impact\"></sakuga-tags>. Works in forms with a name."
+    },
+    {
+      "name": "otp",
+      "type": "registry:file",
+      "title": "Sakuga OTP",
+      "description": "A manga verification-code and PIN input row with per-cell spring pops, rapid domino paste wave, completion starburst with ドン! (or hollow ポン for 4-digit PINs), and underdamped error recoil. One file, no dependencies, defines <sakuga-otp>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["otp", "pin", "input", "form", "anime", "animation"],
+      "files": [{ "path": "otp/otp.js", "type": "registry:file", "target": "~/public/sakuga-vfx/otp.js" }],
+      "docs": "Load /sakuga-vfx/otp.js with a script tag, then use <sakuga-otp length=\"6\" separator=\"3\" name=\"code\"></sakuga-otp>. Listen for sakuga:complete; call el.fill(code) or el.error(msg)."
+    },
+    {
+      "name": "pagination",
+      "type": "registry:file",
+      "title": "Sakuga Pagination",
+      "description": "Kinetic manga page switcher where the active ink-framed tile leaps across pages on spring physics, lands with braking dust and pink wedges, and unleashes a lavender crescent slash + シュッ on far jumps. One file, no dependencies, defines <sakuga-pagination>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["pagination", "navigation", "anime", "animation"],
+      "files": [{ "path": "pagination/pagination.js", "type": "registry:file", "target": "~/public/sakuga-vfx/pagination.js" }],
+      "docs": "Load /sakuga-vfx/pagination.js with a script tag, then use <sakuga-pagination page=\"1\" pages=\"12\" show-edges></sakuga-pagination>. Listen for change (e.detail: page, prev, pages)."
+    },
+    {
+      "name": "gauge",
+      "type": "registry:file",
+      "title": "Sakuga Gauge",
+      "description": "Cel-shaded anime radial arc gauge and mecha tachometer on a high-DPI shared-clock canvas with spring physics, slanted digital readout badge, interactive dial drag/keyboard control, and redline overdrive VFX. One file, no dependencies, defines <sakuga-gauge>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["gauge", "meter", "chart", "data", "anime", "animation"],
+      "files": [{ "path": "gauge/gauge.js", "type": "registry:file", "target": "~/public/sakuga-vfx/gauge.js" }],
+      "docs": "Load /sakuga-vfx/gauge.js with a script tag, then use <sakuga-gauge value=\"25\" label=\"Boost\" unit=\"%\" interactive></sakuga-gauge>. Call el.set(val) or el.rev(); listen for sakuga:overdrive."
     }
   ]
 }

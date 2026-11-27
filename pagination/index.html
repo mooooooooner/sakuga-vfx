@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Pagination</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 52px; min-height: 260px; padding: 92px 0 40px; }
+  .demo-row { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; max-width: 100%; }
+  .demo-label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mute); }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pagination</h1>
+  <p class="sub">Kinetic manga page switcher with spring-leaping indicator, braking dust, and crescent slash far jumps.</p>
+  <div class="stage">
+    <div class="demo-row">
+      <sakuga-pagination id="el" page="1" pages="12" show-edges label="Articles pagination"></sakuga-pagination>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Compact (5 pages)</span>
+      <sakuga-pagination id="el-compact" page="2" pages="5" compact accent="acc" label="Compact pagination"></sakuga-pagination>
+    </div>
+  </div>
+  <p class="hint">Click nearby pages for a crisp spring hop, jump across pages or click <code>&hellip;</code> for a crescent slash + <code>シュッ</code>, or use Left/Right/Home/End keys.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="pagination.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+const elCompact = document.getElementById('el-compact');
+el.addEventListener('change', (e) => say(`page ${e.detail.page} of ${e.detail.pages} (from ${e.detail.prev})`));
+elCompact.addEventListener('change', (e) => say(`compact: page ${e.detail.page} of ${e.detail.pages} (from ${e.detail.prev})`));
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Drawer</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; min-height: 240px; padding: 36px 0; }
+  .btn { padding: 10px 18px; border: 2.5px solid #1d1a4a; border-radius: 12px; background: #fff; color: #1d1a4a; font: 700 15px/1.2 inherit; cursor: pointer; box-shadow: 3px 4px 0 #c9c4e6; }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #c9c4e6; }
+  .btn.pri { background: #8f8df7; color: #fff; }
+  .btn.danger { background: #ff5fa8; color: #fff; }
+  .pill { display: inline-block; padding: 3px 9px; border: 2px solid #1d1a4a; border-radius: 999px; background: #f4f3ff; color: #1d1a4a; font: 800 11px/1.2 inherit; letter-spacing: .04em; text-transform: uppercase; }
+  .rows { display: grid; gap: 10px; margin-top: 14px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border: 2px solid #1d1a4a; border-radius: 11px; background: #fff; box-shadow: 3px 3px 0 #d9d6f8; font-size: 14px; }
+  .row b { font-weight: 800; }
+  .row span { color: var(--mute); font-weight: 600; }
+  .fbtn { padding: 8px 16px; border: 2.2px solid #1d1a4a; border-radius: 10px; background: #fff; color: #1d1a4a; font: 700 14px/1.2 inherit; cursor: pointer; box-shadow: 2px 3px 0 #c9c4e6; }
+  .fbtn.ok { background: #8f8df7; color: #fff; }
+  .fbtn.danger { background: #ff5fa8; color: #fff; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Drawer</h1>
+  <p class="sub">An anime skid-in manga slide-over sheet.</p>
+  <div class="stage">
+    <button id="open-right" class="btn pri" type="button">Right drawer</button>
+    <button id="open-left" class="btn" type="button">Left drawer</button>
+    <button id="open-bottom" class="btn" type="button">Bottom sheet</button>
+    <button id="open-danger" class="btn danger" type="button">Danger sheet</button>
+    <sakuga-drawer id="el" side="right" size="md" heading="Cut Inspector" subtitle="Skids in on springs with seam braking dust.">
+      <span id="tag" class="pill" slot="header-extra">Key 04</span>
+      <p id="copy" style="margin:0">Press Escape, click the backdrop, or use Close to zip the drawer back off-edge.</p>
+      <div class="rows">
+        <div class="row"><b>Spring Curve</b><span>k 520 / d 26</span></div>
+        <div class="row"><b>Seam FX</b><span id="fx-label">Dust + Dotted ズザッ</span></div>
+      </div>
+      <div slot="footer" style="display:flex;justify-content:flex-end;gap:10px">
+        <button id="cancel-btn" class="fbtn" type="button">Cancel</button>
+        <button id="confirm-btn" class="fbtn ok" type="button">Apply</button>
+      </div>
+    </sakuga-drawer>
+  </div>
+  <p class="hint">Try Right, Left, Bottom, or Danger. Dismiss with Escape, the backdrop, or the Close button.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="drawer.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+const tag = document.getElementById('tag');
+const copy = document.getElementById('copy');
+const fxLabel = document.getElementById('fx-label');
+const confirmBtn = document.getElementById('confirm-btn');
+
+function launch(cfg) {
+  el.side = cfg.side;
+  el.size = cfg.size || 'md';
+  el.danger = !!cfg.danger;
+  el.heading = cfg.heading;
+  el.subtitle = cfg.subtitle;
+  tag.textContent = cfg.tag;
+  copy.textContent = cfg.copy;
+  fxLabel.textContent = cfg.fx;
+  confirmBtn.textContent = cfg.danger ? 'Purge Now' : 'Apply';
+  confirmBtn.className = cfg.danger ? 'fbtn danger' : 'fbtn ok';
+  el.show();
+}
+
+document.getElementById('open-right').addEventListener('click', () => launch({
+  side: 'right', size: 'md', danger: false,
+  heading: 'Cut Inspector', subtitle: 'Skids in from the right edge on springs.',
+  tag: 'Right', copy: 'Press Escape, click the backdrop, or click Close to zip the drawer back off-edge.',
+  fx: '5 Dust Puffs + Dotted ズザッ',
+}));
+document.getElementById('open-left').addEventListener('click', () => launch({
+  side: 'left', size: 'sm', danger: false,
+  heading: 'Scene Index', subtitle: 'Slides in cleanly from the left edge.',
+  tag: 'Left', copy: 'Jump between cuts, review storyboard notes, or dismiss with Escape.',
+  fx: '5 Dust Puffs + Dotted ズザッ',
+}));
+document.getElementById('open-bottom').addEventListener('click', () => launch({
+  side: 'bottom', size: 'md', danger: false,
+  heading: 'Action Sheet', subtitle: 'Rises from the bottom with a manga grip handle.',
+  tag: 'Bottom', copy: 'Compact sheet anchored to the bottom edge with full focus trap and scroll lock.',
+  fx: 'Top Seam Dust + Dotted ズザッ',
+}));
+document.getElementById('open-danger').addEventListener('click', () => launch({
+  side: 'bottom', size: 'md', danger: true,
+  heading: 'Danger Override', subtitle: 'Caution stripe, impact burst, shards, and hollow ドン.',
+  tag: 'Alert', copy: 'Destructive confirmation sheet. Confirming this action cannot be undone.',
+  fx: 'Back Burst + Shards + Hollow ドン',
+}));
+
+document.getElementById('cancel-btn').addEventListener('click', () => el.close('cancel'));
+document.getElementById('confirm-btn').addEventListener('click', () => el.close('confirm'));
+el.addEventListener('open', (e) => say(`opened (${e.detail.side}${el.danger ? ', danger' : ''})`));
+el.addEventListener('close', (e) => say(`closed (${e.detail.reason})`));
+</script>
+</body>
+</html>

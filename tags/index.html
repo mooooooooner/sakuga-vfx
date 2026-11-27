@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Tags</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 22px; min-height: 240px; padding: 52px 0 28px; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .demo-btn {
+    padding: 8px 15px; border: 2.5px solid #1d1a4a; border-radius: 12px;
+    background: #fff; color: #1d1a4a; font: 700 13.5px/1.2 inherit;
+    cursor: pointer; box-shadow: 3px 4px 0 #b8b3ff;
+  }
+  .demo-btn.pri { background: #8f8df7; color: #fff; }
+  .demo-btn.acc { background: #ff5fa8; color: #fff; }
+  .demo-btn:active { transform: translate(1px, 1px); box-shadow: 2px 3px 0 #b8b3ff; }
+  .demo-btn:focus-visible { outline: 2.5px solid #ff5fa8; outline-offset: 3px; }
+  .compact-wrap { margin-top: 64px; display: flex; flex-direction: column; gap: 6px; }
+  .compact-lbl { font-size: 12px; font-weight: 700; color: var(--mute); letter-spacing: 0.02em; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint, .embed .compact-wrap { display: none; } .embed main { padding: 0; } .embed .stage { padding: 28px 0 12px; min-height: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tags</h1>
+  <p class="sub">Manga chip input: typing kicks up caret dust, adding stamps a chip with hollow ポン, and deleting slashes it with a pink crescent.</p>
+  <div class="stage">
+    <sakuga-tags id="el" value="sakuga,cel-shaded,keyframe" max="6" placeholder="Add tag..." suggestions="smear,impact,impact-frame,kachi,anime,manga"></sakuga-tags>
+    <div class="actions">
+      <button id="btn-add" type="button" class="demo-btn pri">Add Tag</button>
+      <button id="btn-slash" type="button" class="demo-btn acc">Slash First</button>
+      <button id="btn-dup" type="button" class="demo-btn">Try Duplicate</button>
+    </div>
+    <div class="compact-wrap">
+      <span class="compact-lbl">Compact · accent tone</span>
+      <sakuga-tags id="el-compact" compact tone="acc" value="manga,ink,halftone" placeholder="Compact tags..."></sakuga-tags>
+    </div>
+  </div>
+  <p class="hint">Type a tag and press <code>Enter</code>, <code>,</code>, or <code>Tab</code>; press <code>Backspace</code> twice to slash the last chip; or paste a comma-separated list.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="tags.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+const elCompact = document.getElementById('el-compact');
+const POOL = ['smear', 'impact', 'kachi', 'anime', 'manga', 'impact-frame', 'genga', 'douga'];
+
+document.getElementById('btn-add').addEventListener('click', () => {
+  const cur = new Set(el.tags.map((t) => t.toLowerCase()));
+  const next = POOL.find((t) => !cur.has(t)) || ('cut-' + (el.tags.length + 1));
+  el.add(next);
+});
+document.getElementById('btn-slash').addEventListener('click', () => {
+  if (!el.remove(0)) say('no tags left to slash');
+});
+document.getElementById('btn-dup').addEventListener('click', () => {
+  el.add(el.tags[0] || 'sakuga');
+});
+
+el.addEventListener('sakuga:add', (e) => say('added "' + e.detail.tag + '"  →  ' + e.detail.tags.join(', ')));
+el.addEventListener('sakuga:remove', (e) => say('slashed "' + e.detail.tag + '"  →  ' + (e.detail.tags.join(', ') || '(empty)')));
+el.addEventListener('sakuga:reject', (e) => say('rejected (' + e.detail.reason + '): "' + e.detail.tag + '"'));
+elCompact.addEventListener('change', (e) => say('compact: ' + (e.detail.value || '(empty)')));
+</script>
+</body>
+</html>

@@ -33,6 +33,14 @@ Every effect is drawn in code on one canvas over the page. The lettering was pai
 | [Stepper](stepper/) | `<sakuga-stepper>` | 4-step workflow tracker that pops and draws checkmarks with wedges and kira glint when steps complete. |
 | [Table](table/) | `<sakuga-table>` | Manga-framed scrollable table container with empty-state stamp and `sweep()` refresh speed-line beat. |
 | [Textarea](textarea/) | `<sakuga-textarea>` | Multiline text area with caret dust puffs, Enter speed-line sweep, counter pill, and `sakuga:commit`. |
+| [Select](select/) | `<sakuga-select>` | Searchable, clearable manga dropdown with speech-bubble popover, spring-sliding highlight capsule, hollow カチッ pick hit, and slash clear. |
+| [Drawer](drawer/) | `<sakuga-drawer>` | Skid-in slide-over sheet (`right`, `left`, `bottom`) with smear streak, seam braking dust, dotted ズザッ, and `danger` burst + hollow ドン. |
+| [Menu](menu/) | `<sakuga-menu>` | Triggered manga action and context menu with speech-bubble pop, sliding highlight, shortcuts, checkable items, and danger slash. |
+| [Upload](upload/) | `<sakuga-upload>` | Drag-and-drop manga file dropzone with drag-over wind anticipation, drop impact burst + ドン!, extension stamp chips, and slash-to-remove. |
+| [Tags](tags/) | `<sakuga-tags>` | Interactive tag/chip input with caret dust, stamp-in chips + hollow ポン, pink crescent-slash delete, and duplicate/max spring recoil. |
+| [OTP](otp/) | `<sakuga-otp>` | Verification-code and PIN tiles with per-cell spring pops, domino paste wave, completion burst + ドン! (or hollow ポン), and error recoil shake. |
+| [Pagination](pagination/) | `<sakuga-pagination>` | Kinetic spring-leaping page switcher with braking dust, pink wedges, and lavender crescent-slash far jumps (`シュッ`). |
+| [Gauge](gauge/) | `<sakuga-gauge>` | Cel-shaded 240° anime mecha tachometer on a high-DPI canvas with spring needle, slanted readout badge, interactive drag/keys, and redline overdrive VFX (`ドン!`). |
 
 ## The look
 

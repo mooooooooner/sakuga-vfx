@@ -5,7 +5,7 @@ import { rmSync, mkdtempSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const URL_ = process.argv[2] || 'http://localhost:8000/gallery/';
-const CHROME = process.env.CHROME || ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(existsSync);
+const CHROME = process.env.CHROME || ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find(existsSync);
 const PORT = 9800 + Math.floor(Math.random() * 150), PROFILE = mkdtempSync(join(tmpdir(), 'skv-'));
 const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${PROFILE}`, '--no-first-run', '--hide-scrollbars', 'about:blank'], { stdio: 'ignore' });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -32,7 +32,7 @@ const type = async (text) => { for (const ch of text) { await send('Input.dispat
 let fails = 0;
 const check = (name, ok, got) => { if (!ok) fails++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${name}${got !== undefined ? `  ->  ${got}` : ''}`); };
 
-check('all eleven elements are defined', (await ev(`['button','toggle','slider','checkbox','radio','input','tabs','progress','rating','toast','tooltip'].every((n) => customElements.get('sakuga-' + n))`)));
+check('all 33 elements are defined', (await ev(`['button','toggle','slider','checkbox','radio','input','tabs','progress','rating','toast','tooltip','badge','card','chart','collapse','dialog','heatmap','number','picker','segmented','spinner','stat','stepper','table','textarea','select','drawer','menu','upload','tags','otp','pagination','gauge'].every((n) => customElements.get('sakuga-' + n))`)));
 check('one shared core', (await ev('window.SakugaFX.version')) === 1);
 { await tap('sakuga-button[data-demo=primary] >>> .btn'); await sleep(1200); check('button: tap fires click and done() lands the check', +(await ev(`${find('sakuga-button[data-demo=primary] >>> .btn')}.style.getPropertyValue('--ok')`)) > 0.5); }
 { await tap('sakuga-toggle >>> .tog'); await sleep(500); check('toggle: tap turns it on', await ev(`document.querySelector('sakuga-toggle').checked`));
@@ -54,8 +54,20 @@ check('one shared core', (await ev('window.SakugaFX.version')) === 1);
   check('progress: set(0.5) eases to half', Math.abs((await ev(`+getComputedStyle(${find('sakuga-progress >>> .prog')}).getPropertyValue('--v')`)) - 0.5) < 0.02); }
 { await tap('[data-demo=save] >>> .btn'); await sleep(900); check('toast: it arrives', await ev(`document.querySelector('sakuga-toast').open`)); await sleep(3400); check('toast: it leaves', !(await ev(`document.querySelector('sakuga-toast').open`))); }
 { await tap('sakuga-tooltip >>> .help'); await sleep(600); check('tooltip: tap opens it', await ev(`document.querySelector('sakuga-tooltip').open`)); await key('Escape', 27); await sleep(300); check('tooltip: Escape closes it', !(await ev(`document.querySelector('sakuga-tooltip').open`))); }
-{ await ev(`(() => { const f = document.createElement('form'); f.id = 'tf'; f.innerHTML = '<sakuga-checkbox name="c" checked></sakuga-checkbox><sakuga-slider name="s" value="42"></sakuga-slider><sakuga-rating name="r" value="3"></sakuga-rating><sakuga-toggle name="t" checked></sakuga-toggle>'; document.body.append(f); })()`); await sleep(300);
-  check('forms: values are sent with a form', (await ev(`new URLSearchParams(new FormData(document.getElementById('tf'))).toString()`)) === 'c=on&s=42&r=3&t=on', await ev(`new URLSearchParams(new FormData(document.getElementById('tf'))).toString()`)); }
+{ await tap('sakuga-select >>> .combo'); await sleep(350); check('select: tap opens popover', await ev(`document.querySelector('sakuga-select').open`));
+  await tap('sakuga-select >>> [role="option"]:nth-of-type(2)'); await sleep(450); check('select: picks second option', (await ev(`document.querySelector('sakuga-select').value`)) === 'sakuga'); }
+{ await tap('sakuga-menu >>> .trig'); await sleep(350); check('menu: tap opens panel', await ev(`document.querySelector('sakuga-menu').open`));
+  await key('Escape', 27); await sleep(300); check('menu: Escape closes panel', !(await ev(`document.querySelector('sakuga-menu').open`))); }
+{ await tap('[data-demo=drawer-right] >>> .btn'); await sleep(450); check('drawer: opens from right', await ev(`document.querySelector('sakuga-drawer').open`));
+  await key('Escape', 27); await sleep(450); check('drawer: Escape closes it', !(await ev(`document.querySelector('sakuga-drawer').open`))); }
+{ await tap('[data-demo=rev]'); await sleep(900); check('gauge: rev reaches overdrive', +(await ev(`document.querySelector('sakuga-gauge').value`)) >= 90); }
+{ await tap('[data-demo=drop-files]'); await sleep(600); check('upload: adds 3 files', (await ev(`document.querySelector('sakuga-upload').files.length`)) === 3);
+  await tap('sakuga-upload >>> .rm'); await sleep(450); check('upload: slash-remove drops count to 2', (await ev(`document.querySelector('sakuga-upload').files.length`)) === 2); }
+{ await tap('sakuga-tags >>> .sug'); await sleep(450); check('tags: suggestion click adds chip', (await ev(`document.querySelector('sakuga-tags').tags.length`)) === 4); }
+{ await tap('[data-demo=otp-paste]'); await sleep(700); check('otp: fill completes code', (await ev(`document.querySelector('sakuga-otp').value`)) === '482916' && await ev(`document.querySelector('sakuga-otp').complete`)); }
+{ await tap('sakuga-pagination >>> button[aria-label="Page 12"]'); await sleep(450); check('pagination: jumps to page 12', (await ev(`document.querySelector('sakuga-pagination').page`)) === 12); }
+{ await ev(`(() => { const f = document.createElement('form'); f.id = 'tf'; f.innerHTML = '<sakuga-checkbox name="c" checked></sakuga-checkbox><sakuga-slider name="s" value="42"></sakuga-slider><sakuga-rating name="r" value="3"></sakuga-rating><sakuga-toggle name="t" checked></sakuga-toggle><sakuga-select name="sel" value="ink"><option value="cel">Cel</option><option value="ink">Ink</option></sakuga-select><sakuga-tags name="tg" value="a,b"></sakuga-tags><sakuga-otp name="pin" length="4" value="1234"></sakuga-otp>'; document.body.append(f); })()`); await sleep(350);
+  check('forms: values are sent with a form', (await ev(`new URLSearchParams(new FormData(document.getElementById('tf'))).toString()`)) === 'c=on&s=42&r=3&t=on&sel=ink&tg=a%2Cb&pin=1234', await ev(`new URLSearchParams(new FormData(document.getElementById('tf'))).toString()`)); }
 check('no horizontal scroll at 390', (await ev('document.documentElement.scrollWidth')) <= 390, await ev('document.documentElement.scrollWidth'));
 if (logs.length) { console.log(logs.join('\n')); fails++; }
 ws.close(); chrome.kill(); await sleep(300); try { rmSync(PROFILE, { recursive: true, force: true }); } catch {} process.exit(fails ? 1 : 0);

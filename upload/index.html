@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Upload</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: start center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 48px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 18px; min-height: 260px; padding: 84px 0 28px; }
+  sakuga-upload { max-width: 500px; }
+  .demo-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 9px; margin-top: 4px; }
+  .demo-btn { padding: 7px 13px; border: 2.3px solid #1d1a4a; border-radius: 10px; background: #fff; color: #1d1a4a; font: 700 13px/1.15 inherit; cursor: pointer; box-shadow: 3px 3px 0 #b8b3ff; }
+  .demo-btn:hover { background: #f3f1ff; }
+  .demo-btn.acc { background: #ff5fa8; color: #fff; box-shadow: 3px 3px 0 #1d1a4a; }
+  .demo-btn.acc:hover { background: #f24d99; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; } .embed .stage { padding: 24px 0 12px; min-height: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Upload</h1>
+  <p class="sub">Manga-framed drag-and-drop dropzone with impact bursts, cel-shaded extension chips, and slash-to-remove.</p>
+  <div class="stage">
+    <sakuga-upload id="el" multiple accept="image/*,.pdf,.txt,.json" max-size="5MB" max-files="4"></sakuga-upload>
+    <div class="demo-bar">
+      <button id="btn-single" class="demo-btn" type="button">Simulate Drop (Single)</button>
+      <button id="btn-multi" class="demo-btn" type="button">Simulate Drop (3 Files)</button>
+      <button id="btn-invalid" class="demo-btn acc" type="button">Simulate Invalid File</button>
+      <button id="btn-clear" class="demo-btn" type="button">Clear</button>
+    </div>
+  </div>
+  <p class="hint">Drag real files onto the frame, press Enter/Space or click to browse, or trigger the simulated drops above. Click × on any file to slash-remove it.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="upload.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+
+const makeFile = (name, bytes, type) => new File([new Uint8Array(bytes)], name, { type });
+
+let singleIdx = 0;
+const singles = [
+  ['keyframe-cut-01.png', 428 * 1024, 'image/png'],
+  ['dialogue-script.txt', 18 * 1024, 'text/plain'],
+  ['palette-tokens.json', 12 * 1024, 'application/json'],
+  ['layout-sheet.pdf', 980 * 1024, 'application/pdf'],
+];
+let invalidIdx = 0;
+
+document.getElementById('btn-single').addEventListener('click', () => {
+  const [name, size, type] = singles[singleIdx++ % singles.length];
+  el.addFiles([makeFile(name, size, type)]);
+});
+
+document.getElementById('btn-multi').addEventListener('click', () => {
+  el.addFiles([
+    makeFile('sakuga-storyboard.pdf', 1420 * 1024, 'application/pdf'),
+    makeFile('impact-frame-04.png', 864 * 1024, 'image/png'),
+    makeFile('timing-sheet.json', 24 * 1024, 'application/json'),
+  ]);
+});
+
+document.getElementById('btn-invalid').addEventListener('click', () => {
+  const bad = (invalidIdx++ % 2 === 0)
+    ? makeFile('raw-render-8k.png', Math.round(6.2 * 1024 * 1024), 'image/png')
+    : makeFile('shader-pack.exe', 32 * 1024, 'application/octet-stream');
+  el.addFiles([bad]);
+});
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+  el.clear();
+});
+
+el.addEventListener('change', (e) => {
+  const { files, added, removed, cleared } = e.detail;
+  if (cleared) say('cleared (0 files)');
+  else if (removed) say(`removed ${removed.name} (${files.length} left)`);
+  else if (added) say(`added ${added.map((f) => f.name).join(', ')} (${files.length} total)`);
+});
+
+el.addEventListener('sakuga:reject', (e) => {
+  say('rejected: ' + e.detail.rejected.map((r) => r.reason).join('; '));
+});
+</script>
+</body>
+</html>

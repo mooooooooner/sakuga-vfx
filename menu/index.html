@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Menu</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 22px; min-height: 240px; padding: 36px 0; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .icon-trig {
+    display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0;
+    border: var(--sk-bw, 3.2px) solid var(--sk-ink, #1d1a4a); border-radius: var(--sk-r, 15px);
+    background: var(--sk-card, #fff); color: var(--sk-ink, #1d1a4a);
+    box-shadow: var(--sk-sh, 6px 7px 0 #b8b3ff);
+    font: 900 20px/1 -apple-system, "Segoe UI", sans-serif; cursor: pointer;
+  }
+  .icon-trig:hover { background: color-mix(in srgb, var(--sk-soft, #b8b3ff) 18%, #fff); }
+  .icon-trig:focus-visible { outline: 2.5px solid var(--sk-acc, #ff5fa8); outline-offset: 3px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Menu</h1>
+  <p class="sub">Triggered manga action and context menu with speech-bubble pop, sliding cel highlight, checkable toggles, and a danger slash.</p>
+  <div class="stage" id="stage">
+    <sakuga-menu id="el" label="Actions">
+      <option value="edit" data-icon="edit" data-shortcut="⌘E">Edit Frame</option>
+      <option value="duplicate" data-icon="copy" data-shortcut="⌘D">Duplicate</option>
+      <option value="pin" data-checkable data-checked>Pin to Top</option>
+      <hr>
+      <option value="delete" data-icon="trash" data-shortcut="Del" data-danger>Delete Cut</option>
+    </sakuga-menu>
+
+    <sakuga-menu id="el-custom" align="end" label="More options">
+      <button type="button" slot="trigger" class="icon-trig" aria-label="More options">⋯</button>
+      <option value="star" data-icon="star" data-shortcut="S">Favorite</option>
+      <option value="share" data-icon="share">Share Link</option>
+      <option value="export" data-icon="download" data-shortcut="⌘S">Export Sheet</option>
+      <option value="autosave" data-checkable data-checked>Auto-save</option>
+      <option value="archive" data-icon="bolt" disabled>Archived</option>
+      <hr>
+      <option value="purge" data-icon="trash" data-shortcut="⌫" data-danger>Purge Draft</option>
+    </sakuga-menu>
+  </div>
+  <p class="hint">Open a menu, navigate with arrow keys, or right-click the stage for a context menu.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="menu.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const mainMenu = document.getElementById('el');
+for (const m of [mainMenu, document.getElementById('el-custom')]) {
+  m.addEventListener('select', (e) => {
+    const d = e.detail;
+    const chk = d.checked !== undefined ? ` (${d.checked ? 'checked' : 'unchecked'})` : '';
+    say(`${d.label} [${d.value}]${chk}`);
+  });
+}
+document.getElementById('stage').addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  mainMenu.openAt(e.clientX, e.clientY);
+});
+</script>
+</body>
+</html>

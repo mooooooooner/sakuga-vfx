@@ -76,6 +76,14 @@
 <script src="../stepper/stepper.js"></script>
 <script src="../table/table.js"></script>
 <script src="../textarea/textarea.js"></script>
+<script src="../select/select.js"></script>
+<script src="../drawer/drawer.js"></script>
+<script src="../menu/menu.js"></script>
+<script src="../upload/upload.js"></script>
+<script src="../tags/tags.js"></script>
+<script src="../otp/otp.js"></script>
+<script src="../pagination/pagination.js"></script>
+<script src="../gauge/gauge.js"></script>
 <script>
 // The gallery: every control live on one page, with its install line and a prompt that hands a coding agent the real file.
 const REPO = 'finktheartist/sakuga-vfx';
@@ -106,6 +114,14 @@ const ITEMS = [
   { id: 'table', name: 'Table', tag: 'sakuga-table', how: 'Click Sweep to play the refresh beat.', html: '<div style="display:grid;gap:10px;width:100%"><sakuga-table max-height="170px"><table><thead><tr><th>Date</th><th>Task</th><th>Hours</th></tr></thead><tbody><tr><td>2026-04-12</td><td>Release</td><td>2.5 h</td></tr><tr><td>2026-04-14</td><td>Migration</td><td>3.0 h</td></tr></tbody></table></sakuga-table><div style="text-align:center"><button class="pill" type="button" data-demo="sweep">Sweep</button></div></div>', wide: true },
   { id: 'chart', name: 'Chart', tag: 'sakuga-chart', how: 'Hover or click a bar.', html: '<sakuga-chart mode="vertical" tone="pri" unit="h" style="width:100%"></sakuga-chart>', wide: true },
   { id: 'heatmap', name: 'Heatmap', tag: 'sakuga-heatmap', how: 'Hover or tap a day cell.', html: '<sakuga-heatmap style="width:100%"></sakuga-heatmap>', wide: true },
+  { id: 'select', name: 'Select', tag: 'sakuga-select', how: 'Open, filter, pick an option, or click × to slash-clear.', html: '<sakuga-select label="Animation style" value="cel" searchable clearable><option value="cel" data-tag="2D" data-desc="Flat two-tone anime cel shading">Cel Shaded</option><option value="sakuga" data-tag="KEY" data-desc="Full-motion key animation cut">Sakuga Cut</option><option value="ink" data-tag="B/W" data-desc="Crisp G-pen manga linework">Manga Ink</option><option value="tone" data-tag="DOT" data-desc="Classic screentone halftone">Halftone</option></sakuga-select>' },
+  { id: 'menu', name: 'Menu', tag: 'sakuga-menu', how: 'Open the action menu and try the danger Delete Cut.', html: '<sakuga-menu label="Actions"><option value="edit" data-icon="edit" data-shortcut="⌘E">Edit Frame</option><option value="duplicate" data-icon="copy" data-shortcut="⌘D">Duplicate</option><option value="pin" data-checkable data-checked>Pin to Top</option><hr><option value="delete" data-icon="trash" data-shortcut="Del" data-danger>Delete Cut</option></sakuga-menu>' },
+  { id: 'drawer', name: 'Drawer', tag: 'sakuga-drawer', how: 'Open the Right or Danger Bottom sheet.', html: '<div class="toastwrap"><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><sakuga-button variant="secondary" data-demo="drawer-right">Right drawer</sakuga-button><button class="pill" type="button" data-demo="drawer-danger">Danger bottom</button></div><sakuga-drawer side="right" size="md" heading="Cut Inspector" subtitle="Skids in from the edge on springs."><p style="margin:0">Press Escape, click the backdrop, or click Close to zip off-edge.</p></sakuga-drawer></div>' },
+  { id: 'gauge', name: 'Gauge', tag: 'sakuga-gauge', how: 'Drag the dial or hit Rev Sweep to trigger redline overdrive.', html: '<div style="display:grid;justify-items:center;gap:12px"><sakuga-gauge value="25" label="Boost" unit="%" interactive></sakuga-gauge><button class="pill" type="button" data-demo="rev">Rev Sweep</button></div>' },
+  { id: 'upload', name: 'Upload', tag: 'sakuga-upload', how: 'Drop files, click Simulate Drop, or click × to slash-remove.', html: '<div style="display:grid;gap:12px;width:100%"><sakuga-upload multiple accept="image/*,.pdf,.txt,.json" max-size="5MB" max-files="4"></sakuga-upload><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="drop-files">Simulate Drop (3 Files)</button><button class="pill" type="button" data-demo="clear-files">Clear</button></div></div>', wide: true },
+  { id: 'tags', name: 'Tags', tag: 'sakuga-tags', how: 'Type and press Enter, click a suggestion, or click × to slash.', html: '<sakuga-tags value="sakuga,cel-shaded,keyframe" max="6" placeholder="Add tag..." suggestions="smear,impact,kachi,anime"></sakuga-tags>', wide: true },
+  { id: 'otp', name: 'OTP', tag: 'sakuga-otp', how: 'Type digits, Paste 482916 for the domino burst, or test Error.', html: '<div style="display:grid;justify-items:center;gap:14px;width:100%"><sakuga-otp length="6" separator="3" label="Verification code"></sakuga-otp><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="otp-paste">Paste 482916</button><button class="pill" type="button" data-demo="otp-err">Error</button><button class="pill" type="button" data-demo="otp-clear">Clear</button></div></div>', wide: true },
+  { id: 'pagination', name: 'Pagination', tag: 'sakuga-pagination', how: 'Step pages or jump straight to 12 for the crescent slash.', html: '<sakuga-pagination page="1" pages="12" show-edges label="Results"></sakuga-pagination>', wide: true },
 ];
 
 // What each prompt says about wiring its component in. The rest of the prompt is the same for all of them.
@@ -166,6 +182,22 @@ const WIRE = {
     'Use the empty and empty-text attributes for empty states, and call el.sweep() on data refresh.'],
   textarea: ['Use <sakuga-textarea label="..." placeholder="..." rows="4" maxlength="200"></sakuga-textarea>.',
     'Read and set el.value; fires input, change, and sakuga:commit on Ctrl/Cmd+Enter. Works in forms with a name.'],
+  select: ['List choices as <option value="..." data-tag="..." data-desc="...">Label</option> inside <sakuga-select searchable clearable label="...">...</sakuga-select>, or call el.setOptions(items).',
+    'Read and set el.value; fires change (e.detail: index, value, label, option). Works in forms with a name.'],
+  drawer: ['Place <sakuga-drawer side="right" size="md" heading="..." subtitle="...">...</sakuga-drawer> (side can be right, left, or bottom; add danger for the caution stripe and burst variant).',
+    'Call el.show() / el.close() or toggle el.open. Supports slot="header-extra" and auto-hiding slot="footer"; fires cancelable sakuga:close, open, and close.'],
+  menu: ['List actions as <option value="..." data-icon="edit" data-shortcut="⌘E">Label</option> and <hr> dividers inside <sakuga-menu label="Actions">...</sakuga-menu>, or assign el.items.',
+    'Add data-checkable / data-checked for toggle items and data-danger for the anime slash beat. Supports [slot="trigger"] and el.openAt(x, y) context menus; listen for select.'],
+  upload: ['Use <sakuga-upload multiple accept="image/*,.pdf" max-size="5MB" max-files="4"></sakuga-upload>.',
+    'Read el.files or let it submit in a <form> with a name. Call el.addFiles(list), el.removeFile(i), el.clear(), or el.browse(); listen for change and sakuga:reject.'],
+  tags: ['Use <sakuga-tags value="sakuga,cel-shaded" max="6" placeholder="Add tag..." suggestions="smear,impact,kachi"></sakuga-tags>.',
+    'Read and set el.value (CSV) or el.tags (string[]); call el.add(text) / el.remove(i) / el.clear(). Works in forms with a name; fires change, sakuga:add, sakuga:remove, and sakuga:reject.'],
+  otp: ['Use <sakuga-otp length="6" separator="3" name="code" label="Verification code"></sakuga-otp> (add masked for PINs or type="alphanumeric").',
+    'Read el.value and el.complete; listen for input, change, and sakuga:complete. Call el.fill(code), el.error(msg), or el.clear(). Works in forms with a name.'],
+  pagination: ['Use <sakuga-pagination page="1" pages="12" show-edges label="Results"></sakuga-pagination> (or pass total and page-size).',
+    'Call el.go(page), el.prev(), el.next(), el.first(), or el.last(); listen for change (e.detail: page, prev, pages).'],
+  gauge: ['Use <sakuga-gauge value="25" min="0" max="100" unit="%" label="Boost" interactive></sakuga-gauge>.',
+    'Call el.set(val) or el.rev(peak); customize warn, overdrive, size (sm/md/lg), and tone (pri/acc/green/amber). Listen for sakuga:overdrive, input, and change.'],
 };
 const SKILL = { url: new URL('../skills/sakuga-vfx/SKILL.md', location.href).href, install: `npx skills add ${REPO}` };
 const fileUrl = (id) => new URL(`../${id}/${id}.js`, location.href).href;
@@ -242,6 +274,45 @@ for (const it of ITEMS) {
     });
     el.addEventListener('select', (e) => say(`select: ${e.detail.date} (${e.detail.hours}h)`));
   }
+  else if (it.tag === 'sakuga-select') el.addEventListener('change', (e) => say(`change: ${e.detail.label || '(cleared)'}`));
+  else if (it.tag === 'sakuga-menu') el.addEventListener('select', (e) => say(`select: ${e.detail.label}${e.detail.checked !== undefined ? (e.detail.checked ? ' (checked)' : ' (unchecked)') : ''}`));
+  else if (it.tag === 'sakuga-drawer') {
+    card.querySelector('[data-demo=drawer-right]').addEventListener('click', () => {
+      el.side = 'right'; el.danger = false; el.heading = 'Cut Inspector'; el.subtitle = 'Skids in from the right edge.'; el.show(); say('opened (right)');
+    });
+    card.querySelector('[data-demo=drawer-danger]').addEventListener('click', () => {
+      el.side = 'bottom'; el.danger = true; el.heading = 'Danger Override'; el.subtitle = 'Caution stripe, burst, shards, and ドン.'; el.show(); say('opened (bottom danger)');
+    });
+    el.addEventListener('close', (e) => say(`closed (${e.detail?.reason || 'api'})`));
+  }
+  else if (it.tag === 'sakuga-gauge') {
+    card.querySelector('[data-demo=rev]').addEventListener('click', () => { el.rev(96); say('rev(96)'); });
+    el.addEventListener('sakuga:overdrive', (e) => say(`OVERDRIVE! ${e.detail.value}%`));
+    el.addEventListener('change', (e) => say(`change: ${e.detail.value}%`));
+  }
+  else if (it.tag === 'sakuga-upload') {
+    card.querySelector('[data-demo=drop-files]').addEventListener('click', () => {
+      el.addFiles([
+        new File([new Uint8Array(142000)], 'sakuga-storyboard.pdf', { type: 'application/pdf' }),
+        new File([new Uint8Array(88400)], 'impact-frame-04.png', { type: 'image/png' }),
+        new File(['{"fps":24}'], 'timing-sheet.json', { type: 'application/json' }),
+      ]);
+    });
+    card.querySelector('[data-demo=clear-files]').addEventListener('click', () => el.clear());
+    el.addEventListener('change', (e) => say(`files: ${e.detail.files.length}`));
+    el.addEventListener('sakuga:reject', (e) => say(`rejected: ${e.detail.rejected.length}`));
+  }
+  else if (it.tag === 'sakuga-tags') {
+    el.addEventListener('change', (e) => say(`tags (${e.detail.tags.length}): ${e.detail.value || '(empty)'}`));
+    el.addEventListener('sakuga:reject', (e) => say(`rejected (${e.detail.reason}): ${e.detail.tag}`));
+  }
+  else if (it.tag === 'sakuga-otp') {
+    card.querySelector('[data-demo=otp-paste]').addEventListener('click', () => el.fill('482916'));
+    card.querySelector('[data-demo=otp-err]').addEventListener('click', () => { el.error('Invalid code'); say('error recoil'); });
+    card.querySelector('[data-demo=otp-clear]').addEventListener('click', () => { el.clear(); say('cleared'); });
+    el.addEventListener('sakuga:complete', (e) => say(`sakuga:complete: ${e.detail.value}`));
+  }
+  else if (it.tag === 'sakuga-pagination') el.addEventListener('change', (e) => say(`page ${e.detail.page} / ${e.detail.pages}`));
   else if (it.tag !== 'sakuga-spinner') el.addEventListener('change', () => say(`change: ${it.tag === 'sakuga-toggle' || it.tag === 'sakuga-checkbox' ? (el.checked ? 'on' : 'off') : el.value}`));
 }
 // Copying needs the clipboard API, which plain http (other than localhost) does not have, so fall back to a selected textarea.

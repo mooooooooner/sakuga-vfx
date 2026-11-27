@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Gauge</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 38px; min-height: 320px; padding: 88px 0 28px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+  .preset { padding: 8px 14px; border: 2.5px solid #1d1a4a; border-radius: 12px; background: #fff; color: #1d1a4a; font: 700 13.5px/1.2 inherit; cursor: pointer; box-shadow: 3px 4px 0 #b8b3ff; transition: transform 0.08s ease; }
+  .preset:hover { transform: translateY(-1px); }
+  .preset:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #b8b3ff; }
+  .preset.hot { background: #ff5fa8; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .preset.pri { background: #8f8df7; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .variants { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 28px; padding: 28px 0 12px; border-top: 2px dashed #e3e1f2; margin-top: 12px; }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint, .embed .variants { display: none; }
+  .embed main { padding: 0; }
+  .embed .stage { padding: 48px 0 12px; min-height: 0; gap: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Gauge</h1>
+  <p class="sub">Cel-shaded anime mecha tachometer with spring physics and redline overdrive VFX.</p>
+  <div class="stage">
+    <sakuga-gauge id="el" value="25" label="Boost" unit="%" interactive></sakuga-gauge>
+    <div class="controls">
+      <button id="btn-idle" class="preset" type="button">25% Idle</button>
+      <button id="btn-cruise" class="preset" type="button">68% Cruise</button>
+      <button id="btn-overdrive" class="preset hot" type="button">96% Overdrive!</button>
+      <button id="btn-rev" class="preset pri" type="button">Rev Sweep</button>
+    </div>
+  </div>
+  <div class="variants">
+    <sakuga-gauge id="el-sm" size="sm" tone="green" value="42" label="Core Temp" unit="°C"></sakuga-gauge>
+    <sakuga-gauge id="el-lg" size="lg" tone="pri" value="7200" min="0" max="9000" warn="6500" overdrive="8000" label="Engine RPM" unit=""></sakuga-gauge>
+  </div>
+  <p class="hint">Drag the dial, use arrow keys when focused, or hit a preset button to push past the redline.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="gauge.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+
+document.getElementById('btn-idle').addEventListener('click', () => { el.set(25); say('set: 25% (Idle)'); });
+document.getElementById('btn-cruise').addEventListener('click', () => { el.set(68); say('set: 68% (Cruise)'); });
+document.getElementById('btn-overdrive').addEventListener('click', () => { el.set(96); say('set: 96% (Overdrive!)'); });
+document.getElementById('btn-rev').addEventListener('click', () => { el.rev(); say('rev() -> 100%'); });
+
+el.addEventListener('input', (e) => say(`input: ${e.detail.value}${el.unit}`));
+el.addEventListener('change', (e) => say(`change: ${e.detail.value}${el.unit} (${Math.round(e.detail.ratio * 100)}%)`));
+el.addEventListener('sakuga:overdrive', (e) => say(`sakuga:overdrive! ${e.detail.value}${el.unit}`));
+</script>
+</body>
+</html>

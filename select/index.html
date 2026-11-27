@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Select</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; min-height: 240px; padding: 36px 0; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Select</h1>
+  <p class="sub">Tactile, searchable manga dropdown with a spring-animated speech-bubble popover.</p>
+  <div class="stage">
+    <sakuga-select id="el" label="Animation style" value="cel" placeholder="Choose style...">
+      <option value="cel" data-tag="2D">Cel Shaded</option>
+      <option value="sakuga" data-tag="KEY">Sakuga Cut</option>
+      <option value="ink" data-tag="B/W">Manga Ink</option>
+      <option value="tone" data-tag="DOT">Halftone</option>
+    </sakuga-select>
+    <sakuga-select id="el-search" label="Studio tool" searchable clearable placeholder="Find a tool...">
+      <option value="gpen" data-tag="INK" data-desc="Sharp variable-width manga nib">G-Pen Nib</option>
+      <option value="maru" data-tag="FINE" data-desc="Crisp hairline detailing pen">Maru Pen</option>
+      <option value="tone" data-tag="DOTS" data-desc="Halftone shading film layer">Screentone</option>
+      <option value="smear" data-tag="FX" data-desc="High-speed motion bridge frame" selected>Smear Frame</option>
+      <option value="impact" data-tag="HIT" data-desc="High-contrast silhouette flash">Impact Frame</option>
+      <option value="airbrush" data-tag="OFF" data-desc="Soft gradient (disabled in cel)" disabled>Soft Airbrush</option>
+    </sakuga-select>
+    <sakuga-select id="el-compact" label="Frame rate" compact value="24" style="--sk-select-width: 170px">
+      <option value="12">12 fps (2s)</option>
+      <option value="24">24 fps (1s)</option>
+      <option value="30">30 fps</option>
+      <option value="60">60 fps</option>
+    </sakuga-select>
+  </div>
+  <p class="hint">Open a menu, navigate with arrows or search, pick an option, or slash it clear.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="select.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+for (const [id, name] of [['el', 'style'], ['el-search', 'tool'], ['el-compact', 'fps']]) {
+  const s = document.getElementById(id);
+  s.addEventListener('change', (e) => say(`${name}: ${e.detail.value || '(cleared)'}${e.detail.label ? ' — ' + e.detail.label : ''}`));
+  s.addEventListener('sakuga:open', () => say(`${name}: opened`));
+  s.addEventListener('sakuga:close', () => {
+    if (!document.querySelector('.said').textContent.startsWith(`${name}: `)) say(`${name}: closed`);
+  });
+}
+</script>
+</body>
+</html>

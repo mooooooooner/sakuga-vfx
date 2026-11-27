@@ -19,6 +19,20 @@ Every effect is drawn in code on one canvas over the page. The lettering was pai
 | [Rating](rating/) | `<sakuga-rating>` | Stars pop in one after another; five gets a burst. |
 | [Toast](toast/) | `<sakuga-toast>` | Streaks in as a smear, lands in dust with ズザッ, leaves by shrinking. |
 | [Tooltip](tooltip/) | `<sakuga-tooltip>` | The hint springs out like a speech bubble with puffs and カチッ. |
+| [Badge](badge/) | `<sakuga-badge>` | Two-tone manga status stamp, live dot chip, and clickable filter pill with spring pop, wedges, and kira glint. |
+| [Card](card/) | `<sakuga-card>` | Foundational manga panel surface with ink outline, hard offset shadow, tactile lift, and `impact()` / `pulse()` beats. |
+| [Chart](chart/) | `<sakuga-chart>` | Cel-shaded vertical bar chart and horizontal distribution bars with staggered spring entrance and callout bubbles. |
+| [Collapse](collapse/) | `<sakuga-collapse>` | Spring-animated collapsible drawer / accordion that settles to `overflow: visible` so child effects are never clipped. |
+| [Dialog](dialog/) | `<sakuga-dialog>` | Slam-in manga modal with corner puffs, braking lines, hollow ポン, and a `danger` impact burst variant. |
+| [Heatmap](heatmap/) | `<sakuga-heatmap>` | Monthly calendar heatmap with 4-level two-tone swatches, tooltips, and peak-day kira glint + ポン. |
+| [Number](number/) | `<sakuga-number>` | Tactile numeric stepper with − / + rules, caret dust, vertical value pop, and min/max recoil shards. |
+| [Picker](picker/) | `<sakuga-picker>` | Unified Date / Month / Time input with a spring-animated speech-bubble popover and hollow カチッ. |
+| [Segmented](segmented/) | `<sakuga-segmented>` | Compact sliding-capsule selector that stretches with velocity and lands with wedges, puff, and speed lines. |
+| [Spinner](spinner/) | `<sakuga-spinner>` | Cel-shaded anime kinetic loader drawn on a canvas stepped on the shared SakugaFX clock. |
+| [Stat](stat/) | `<sakuga-stat>` | Manga KPI stat card that pops on value updates or `hit()`, with slanted delta stamp, ticks, and kira glint. |
+| [Stepper](stepper/) | `<sakuga-stepper>` | 4-step workflow tracker that pops and draws checkmarks with wedges and kira glint when steps complete. |
+| [Table](table/) | `<sakuga-table>` | Manga-framed scrollable table container with empty-state stamp and `sweep()` refresh speed-line beat. |
+| [Textarea](textarea/) | `<sakuga-textarea>` | Multiline text area with caret dust puffs, Enter speed-line sweep, counter pill, and `sakuga:commit`. |
 
 ## The look
 

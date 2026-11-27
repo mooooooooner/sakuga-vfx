@@ -41,7 +41,7 @@
   <header>
     <div>
       <h1>Sakuga VFX</h1>
-      <p class="lede">Twelve ordinary controls that react like anime: squash and overshoot on springs, and drawn effects (smoke, impact bursts, splashes, slashes) with manga sound-effect lettering. Each one is a single file with no dependencies.</p>
+      <p class="lede">Ordinary controls that react like anime: squash and overshoot on springs, and drawn effects (smoke, impact bursts, splashes, slashes) with manga sound-effect lettering. Each one is a single file with no dependencies.</p>
       <p class="links">
         <a class="pill" href="https://github.com/finktheartist/sakuga-vfx" target="_blank" rel="noopener">The repo on GitHub <span aria-hidden="true">&#8599;</span></a>
         <a class="pill" href="https://x.com/crtvTeknologist" target="_blank" rel="noopener">@crtvTeknologist on X <span aria-hidden="true">&#8599;</span></a>
@@ -62,6 +62,20 @@
 <script src="../rating/rating.js"></script>
 <script src="../toast/toast.js"></script>
 <script src="../tooltip/tooltip.js"></script>
+<script src="../badge/badge.js"></script>
+<script src="../card/card.js"></script>
+<script src="../chart/chart.js"></script>
+<script src="../collapse/collapse.js"></script>
+<script src="../dialog/dialog.js"></script>
+<script src="../heatmap/heatmap.js"></script>
+<script src="../number/number.js"></script>
+<script src="../picker/picker.js"></script>
+<script src="../segmented/segmented.js"></script>
+<script src="../spinner/spinner.js"></script>
+<script src="../stat/stat.js"></script>
+<script src="../stepper/stepper.js"></script>
+<script src="../table/table.js"></script>
+<script src="../textarea/textarea.js"></script>
 <script>
 // The gallery: every control live on one page, with its install line and a prompt that hands a coding agent the real file.
 const REPO = 'finktheartist/sakuga-vfx';
@@ -78,6 +92,20 @@ const ITEMS = [
   { id: 'rating', name: 'Rating', tag: 'sakuga-rating', how: 'Give it five.', html: '<sakuga-rating label="Rating"></sakuga-rating>' },
   { id: 'toast', name: 'Toast', tag: 'sakuga-toast', how: 'Press Save.', html: '<div class="toastwrap"><sakuga-button variant="secondary" data-demo="save">Save</sakuga-button><sakuga-toast></sakuga-toast></div>' },
   { id: 'tooltip', name: 'Tooltip', tag: 'sakuga-tooltip', how: 'Hover, focus or tap the button.', html: '<sakuga-tooltip text="Helpful hint!"></sakuga-tooltip>' },
+  { id: 'badge', name: 'Badge', tag: 'sakuga-badge', how: 'Click the filter pill to toggle it.', html: '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><sakuga-badge tone="green" dot active>Online</sakuga-badge><sakuga-badge clickable tone="pri" count="12">Filter</sakuga-badge></div>' },
+  { id: 'card', name: 'Card', tag: 'sakuga-card', how: 'Click the card for an impact beat.', html: '<sakuga-card heading="Manga Panel" interactive style="width:100%"><p style="margin:0;font-size:13.5px">Ink outline and hard offset shadow at rest.</p></sakuga-card>' },
+  { id: 'collapse', name: 'Collapse', tag: 'sakuga-collapse', how: 'Toggle the drawer open and closed.', html: '<sakuga-collapse label="Show details" style="width:100%"><p style="margin:10px 0 0;font-size:13.5px">Spring-animated drawer with overflow-visible settling.</p></sakuga-collapse>' },
+  { id: 'dialog', name: 'Dialog', tag: 'sakuga-dialog', how: 'Press Open dialog.', html: '<div class="toastwrap"><sakuga-button variant="secondary" data-demo="dialog">Open dialog</sakuga-button><sakuga-dialog heading="Confirm Action" subtitle="Slams in on springs."><p style="margin:0">Press Escape or click outside to close.</p></sakuga-dialog></div>' },
+  { id: 'number', name: 'Number', tag: 'sakuga-number', how: 'Step up/down or hit the bounds.', html: '<sakuga-number value="2.5" min="0" max="10" step="0.5" unit="h" label="Hours"></sakuga-number>' },
+  { id: 'picker', name: 'Picker', tag: 'sakuga-picker', how: 'Open the calendar popover and pick a date.', html: '<sakuga-picker type="date" value="2026-04-15" label="Date"></sakuga-picker>' },
+  { id: 'segmented', name: 'Segmented', tag: 'sakuga-segmented', how: 'Switch options to slide the capsule.', html: '<sakuga-segmented value="auto" label="Mode"><option value="auto">Auto</option><option value="fast">Fast</option><option value="quiet">Quiet</option></sakuga-segmented>' },
+  { id: 'spinner', name: 'Spinner', tag: 'sakuga-spinner', how: 'Runs on the shared SakugaFX clock.', html: '<sakuga-spinner size="md" label="Loading..." tone="pri"></sakuga-spinner>' },
+  { id: 'stat', name: 'Stat', tag: 'sakuga-stat', how: 'Click to bump the value and fire a hit.', html: '<sakuga-stat label="Total Hours" value="18.50 h" sub="6 sessions" delta="+1.20h" tone="pri" style="width:220px;cursor:pointer"></sakuga-stat>' },
+  { id: 'stepper', name: 'Stepper', tag: 'sakuga-stepper', how: 'Click Advance to flip a step to done.', html: '<div style="display:grid;gap:12px;width:100%"><sakuga-stepper layout="grid" label="Workflow"><option value="1" data-state="done">Connect</option><option value="2" data-state="active">Compute</option><option value="3" data-state="idle">Preview</option><option value="4" data-state="idle">Save</option></sakuga-stepper><div style="text-align:center"><button class="pill" type="button" data-demo="step">Advance</button></div></div>', wide: true },
+  { id: 'textarea', name: 'Textarea', tag: 'sakuga-textarea', how: 'Type inside; press Ctrl/Cmd+Enter to commit.', html: '<sakuga-textarea label="Notes" placeholder="Type notes..." rows="3" maxlength="120" style="width:100%"></sakuga-textarea>' },
+  { id: 'table', name: 'Table', tag: 'sakuga-table', how: 'Click Sweep to play the refresh beat.', html: '<div style="display:grid;gap:10px;width:100%"><sakuga-table max-height="170px"><table><thead><tr><th>Date</th><th>Task</th><th>Hours</th></tr></thead><tbody><tr><td>2026-04-12</td><td>Release</td><td>2.5 h</td></tr><tr><td>2026-04-14</td><td>Migration</td><td>3.0 h</td></tr></tbody></table></sakuga-table><div style="text-align:center"><button class="pill" type="button" data-demo="sweep">Sweep</button></div></div>', wide: true },
+  { id: 'chart', name: 'Chart', tag: 'sakuga-chart', how: 'Hover or click a bar.', html: '<sakuga-chart mode="vertical" tone="pri" unit="h" style="width:100%"></sakuga-chart>', wide: true },
+  { id: 'heatmap', name: 'Heatmap', tag: 'sakuga-heatmap', how: 'Hover or tap a day cell.', html: '<sakuga-heatmap style="width:100%"></sakuga-heatmap>', wide: true },
 ];
 
 // What each prompt says about wiring its component in. The rest of the prompt is the same for all of them.
@@ -110,6 +138,34 @@ const WIRE = {
     'The element keeps its place on the page while the toast is hidden. Position it yourself, for example position: fixed; left: 24px; bottom: 24px.'],
   tooltip: ['Use <sakuga-tooltip text="..." label="..."></sakuga-tooltip> next to the thing it explains. text is the hint; label is what a screen reader calls the button ("Help" by default).',
     'It opens on hover, focus and tap, and Escape closes it. Whatever is inside the element replaces the "?" on the button.'],
+  badge: ['Use <sakuga-badge tone="green" dot active>Online</sakuga-badge> for status stamps, or add clickable and count="12" for interactive filter pills.',
+    'Call el.pop() to play the celebratory status-change beat.'],
+  card: ['Wrap panel content in <sakuga-card heading="..." variant="default" interactive>...</sakuga-card>.',
+    'Supports default, accent, flat and hero variants, padding (none, sm, md, lg), and el.impact() / el.pulse() beats.'],
+  chart: ['Place <sakuga-chart mode="vertical" tone="pri" unit="h"></sakuga-chart> and assign el.items = [{ label, value, tone? }].',
+    'Supports vertical and horizontal modes. Listen for select (e.detail: index, item).'],
+  collapse: ['Wrap expandable content in <sakuga-collapse label="Details">...</sakuga-collapse>.',
+    'Toggle via the built-in header or the open property; listen for change (e.detail.open).'],
+  dialog: ['Place <sakuga-dialog heading="..." subtitle="...">...</sakuga-dialog> with an optional slot="footer".',
+    'Set el.open = true to slam it in (add danger for the alert burst variant). Listen for close.'],
+  heatmap: ['Place <sakuga-heatmap></sakuga-heatmap> and assign el.days = [{ date, weekday, kind, workday, hours }].',
+    'Groups days into monthly mini-cards with tooltips; listen for select (e.detail is the day object).'],
+  number: ['Use <sakuga-number value="2.5" min="0" max="10" step="0.5" unit="h" label="..."></sakuga-number>.',
+    'Read and set el.value; fires input and change. Works in forms with a name.'],
+  picker: ['Use <sakuga-picker type="date" value="2026-04-15" label="..."></sakuga-picker> (type can be date, month, or time).',
+    'Read and set el.value; fires input and change. Works in forms with a name.'],
+  segmented: ['List choices as <option>s inside <sakuga-segmented value="auto" label="...">...</sakuga-segmented>.',
+    'Listen for change (e.detail: index, value, label) or read el.value.'],
+  spinner: ['Use <sakuga-spinner size="md" label="Loading..." tone="pri"></sakuga-spinner>.',
+    'Sizes are sm, md and lg; tones are ink, pri, acc and on-pri.'],
+  stat: ['Use <sakuga-stat label="Total" value="18.50 h" sub="..." delta="+1.20h" tone="pri"></sakuga-stat>.',
+    'Updating value or calling el.hit() pops the card with ticks and a kira glint.'],
+  stepper: ['List steps as <option data-state="done|active|idle">Label</option> inside <sakuga-stepper layout="grid"></sakuga-stepper>, or assign el.steps.',
+    'Flipping a step to done plays its completion squash, checkmark draw, wedges and kira glint.'],
+  table: ['Wrap a native <table> inside <sakuga-table max-height="360px"><table>...</table></sakuga-table>.',
+    'Use the empty and empty-text attributes for empty states, and call el.sweep() on data refresh.'],
+  textarea: ['Use <sakuga-textarea label="..." placeholder="..." rows="4" maxlength="200"></sakuga-textarea>.',
+    'Read and set el.value; fires input, change, and sakuga:commit on Ctrl/Cmd+Enter. Works in forms with a name.'],
 };
 const SKILL = { url: new URL('../skills/sakuga-vfx/SKILL.md', location.href).href, install: `npx skills add ${REPO}` };
 const fileUrl = (id) => new URL(`../${id}/${id}.js`, location.href).href;
@@ -141,7 +197,52 @@ for (const it of ITEMS) {
   else if (it.tag === 'sakuga-toast') card.querySelector('[data-demo=save]').addEventListener('click', () => el.show('Saved successfully!'));
   else if (it.tag === 'sakuga-progress') el.addEventListener('sakuga:done', () => say('sakuga:done'));
   else if (it.tag === 'sakuga-tabs') el.addEventListener('change', (e) => say(`Tab: ${e.detail.label}`));
-  else el.addEventListener('change', () => say(`change: ${it.tag === 'sakuga-toggle' || it.tag === 'sakuga-checkbox' ? (el.checked ? 'on' : 'off') : el.value}`));
+  else if (it.tag === 'sakuga-badge') {
+    const btn = card.querySelector('sakuga-badge[clickable]');
+    btn.addEventListener('click', () => { btn.active = !btn.active; say('Filter: ' + (btn.active ? 'active' : 'inactive')); });
+  }
+  else if (it.tag === 'sakuga-card') el.addEventListener('click', () => { el.impact(); say('impact()'); });
+  else if (it.tag === 'sakuga-collapse') el.addEventListener('change', (e) => say('open: ' + e.detail.open));
+  else if (it.tag === 'sakuga-dialog') {
+    card.querySelector('[data-demo=dialog]').addEventListener('click', () => { el.open = true; say('opened'); });
+    el.addEventListener('close', () => say('closed'));
+  }
+  else if (it.tag === 'sakuga-segmented') el.addEventListener('change', (e) => say(`change: ${e.detail.value}`));
+  else if (it.tag === 'sakuga-stat') {
+    let v = 18.5;
+    el.addEventListener('click', () => { v = +(v + 1.5).toFixed(2); el.setAttribute('value', v.toFixed(2) + ' h'); el.hit('big'); say(`value: ${v.toFixed(2)} h`); });
+  }
+  else if (it.tag === 'sakuga-stepper') {
+    const labels = ['Connect', 'Compute', 'Preview', 'Save'];
+    let cur = 1;
+    card.querySelector('[data-demo=step]').addEventListener('click', () => {
+      cur = (cur + 1) % 5;
+      el.steps = labels.map((label, i) => ({ label, state: i < cur ? 'done' : i === cur ? 'active' : 'idle' }));
+      say(`completed: ${cur} / ${labels.length}`);
+    });
+  }
+  else if (it.tag === 'sakuga-table') card.querySelector('[data-demo=sweep]').addEventListener('click', () => { el.sweep(); say('sweep()'); });
+  else if (it.tag === 'sakuga-textarea') el.addEventListener('sakuga:commit', (e) => say(`sakuga:commit (${e.detail.value.length} chars)`));
+  else if (it.tag === 'sakuga-chart') {
+    el.items = [
+      { label: 'Mon', value: 2.5 },
+      { label: 'Tue', value: 4.0 },
+      { label: 'Wed', value: 1.5 },
+      { label: 'Thu', value: 6.0, tone: 'acc' },
+      { label: 'Fri', value: 3.2 },
+    ];
+    el.addEventListener('select', (e) => say(`select: ${e.detail.item.label} (${e.detail.item.value}h)`));
+  }
+  else if (it.tag === 'sakuga-heatmap') {
+    const vals = [0, 1.5, 0, 3.0, 4.5, 0, 0, 2.0, 0, 5.5, 2.5, 1.0, 0, 0, 0, 3.5, 4.0, 2.0, 0, 0, 0, 1.5, 2.5, 6.0, 3.0, 1.0, 0, 0, 2.0, 3.5];
+    const wds = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    el.days = vals.map((h, i) => {
+      const wd = wds[(i + 3) % 7], off = wd === 'Sat' || wd === 'Sun';
+      return { date: `2026-04-${String(i + 1).padStart(2, '0')}`, weekday: wd, kind: off ? 'Weekend' : 'Workday', workday: !off, hours: h };
+    });
+    el.addEventListener('select', (e) => say(`select: ${e.detail.date} (${e.detail.hours}h)`));
+  }
+  else if (it.tag !== 'sakuga-spinner') el.addEventListener('change', () => say(`change: ${it.tag === 'sakuga-toggle' || it.tag === 'sakuga-checkbox' ? (el.checked ? 'on' : 'off') : el.value}`));
 }
 // Copying needs the clipboard API, which plain http (other than localhost) does not have, so fall back to a selected textarea.
 async function copy(text, btn, said) {

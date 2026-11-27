@@ -232,6 +232,146 @@
         }
       ],
       "docs": "Sakuga Tooltip is a plain script that registers a custom element. Load /sakuga-vfx/tooltip.js with a script tag (not a module), then use <sakuga-tooltip text=\"Helpful hint!\"></sakuga-tooltip>. Opens on hover, focus and tap; Escape closes it. More: https://sakuga-vfx.vercel.app"
+    },
+    {
+      "name": "badge",
+      "type": "registry:file",
+      "title": "Sakuga Badge",
+      "description": "A two-tone manga status stamp, live status chip (with dot), and clickable filter pill with spring pop, wedges, and kira glint. One file, no dependencies, defines <sakuga-badge>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["badge", "status", "anime", "animation"],
+      "files": [{ "path": "badge/badge.js", "type": "registry:file", "target": "~/public/sakuga-vfx/badge.js" }],
+      "docs": "Load /sakuga-vfx/badge.js with a script tag, then use <sakuga-badge tone=\"green\" dot active>Online</sakuga-badge> or <sakuga-badge clickable tone=\"pri\" count=\"12\">Filter</sakuga-badge>."
+    },
+    {
+      "name": "card",
+      "type": "registry:file",
+      "title": "Sakuga Card",
+      "description": "A manga panel surface with thick ink outline, hard offset shadow, tactile lift, and impact()/pulse() beats. One file, no dependencies, defines <sakuga-card>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["card", "layout", "anime", "animation"],
+      "files": [{ "path": "card/card.js", "type": "registry:file", "target": "~/public/sakuga-vfx/card.js" }],
+      "docs": "Load /sakuga-vfx/card.js with a script tag, then wrap content in <sakuga-card heading=\"Panel\" interactive>...</sakuga-card>."
+    },
+    {
+      "name": "chart",
+      "type": "registry:file",
+      "title": "Sakuga Chart",
+      "description": "A cel-shaded vertical bar chart and horizontal distribution bar component with staggered spring waves, dust puffs, and callout bubbles. One file, no dependencies, defines <sakuga-chart>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["chart", "data", "anime", "animation"],
+      "files": [{ "path": "chart/chart.js", "type": "registry:file", "target": "~/public/sakuga-vfx/chart.js" }],
+      "docs": "Load /sakuga-vfx/chart.js with a script tag, use <sakuga-chart mode=\"vertical\" tone=\"pri\" unit=\"h\"></sakuga-chart>, and assign el.items."
+    },
+    {
+      "name": "collapse",
+      "type": "registry:file",
+      "title": "Sakuga Collapse",
+      "description": "A spring-animated collapsible manga drawer / accordion that settles to overflow visible so child effects are never clipped. One file, no dependencies, defines <sakuga-collapse>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["collapse", "accordion", "anime", "animation"],
+      "files": [{ "path": "collapse/collapse.js", "type": "registry:file", "target": "~/public/sakuga-vfx/collapse.js" }],
+      "docs": "Load /sakuga-vfx/collapse.js with a script tag, then use <sakuga-collapse label=\"Details\">...</sakuga-collapse>. Listen for change."
+    },
+    {
+      "name": "dialog",
+      "type": "registry:file",
+      "title": "Sakuga Dialog",
+      "description": "An anime slam-in manga modal with squash-stretch springs, corner puffs, braking lines, hollow ポン (or danger burst + ドン). One file, no dependencies, defines <sakuga-dialog>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["dialog", "modal", "anime", "animation"],
+      "files": [{ "path": "dialog/dialog.js", "type": "registry:file", "target": "~/public/sakuga-vfx/dialog.js" }],
+      "docs": "Load /sakuga-vfx/dialog.js with a script tag, then use <sakuga-dialog heading=\"Confirm\">...</sakuga-dialog> and toggle el.open."
+    },
+    {
+      "name": "heatmap",
+      "type": "registry:file",
+      "title": "Sakuga Heatmap",
+      "description": "A manga-framed monthly calendar heatmap with 4-level two-tone swatches, spring wave entrance, speech-bubble tooltips, and peak day effects. One file, no dependencies, defines <sakuga-heatmap>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["heatmap", "calendar", "data", "anime", "animation"],
+      "files": [{ "path": "heatmap/heatmap.js", "type": "registry:file", "target": "~/public/sakuga-vfx/heatmap.js" }],
+      "docs": "Load /sakuga-vfx/heatmap.js with a script tag, use <sakuga-heatmap></sakuga-heatmap>, and assign el.days. Listen for select."
+    },
+    {
+      "name": "number",
+      "type": "registry:file",
+      "title": "Sakuga Number",
+      "description": "A tactile numeric stepper with minus/plus buttons, caret dust, vertical value pop, and min/max recoil shards. One file, no dependencies, defines <sakuga-number>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["number", "input", "anime", "animation"],
+      "files": [{ "path": "number/number.js", "type": "registry:file", "target": "~/public/sakuga-vfx/number.js" }],
+      "docs": "Load /sakuga-vfx/number.js with a script tag, then use <sakuga-number value=\"2.5\" min=\"0\" max=\"10\" step=\"0.5\" unit=\"h\"></sakuga-number>."
+    },
+    {
+      "name": "picker",
+      "type": "registry:file",
+      "title": "Sakuga Picker",
+      "description": "A unified Date, Month, and Time input with a spring-animated manga speech-bubble popover and hollow カチッ on selection. One file, no dependencies, defines <sakuga-picker>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["picker", "date", "time", "input", "anime", "animation"],
+      "files": [{ "path": "picker/picker.js", "type": "registry:file", "target": "~/public/sakuga-vfx/picker.js" }],
+      "docs": "Load /sakuga-vfx/picker.js with a script tag, then use <sakuga-picker type=\"date\" value=\"2026-04-15\"></sakuga-picker>."
+    },
+    {
+      "name": "segmented",
+      "type": "registry:file",
+      "title": "Sakuga Segmented",
+      "description": "A compact inline sliding-capsule selector that stretches with velocity and lands with wedges, braking puff, and speed lines. One file, no dependencies, defines <sakuga-segmented>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["segmented", "navigation", "input", "anime", "animation"],
+      "files": [{ "path": "segmented/segmented.js", "type": "registry:file", "target": "~/public/sakuga-vfx/segmented.js" }],
+      "docs": "Load /sakuga-vfx/segmented.js with a script tag, then use <sakuga-segmented value=\"auto\"><option value=\"auto\">Auto</option>...</sakuga-segmented>."
+    },
+    {
+      "name": "spinner",
+      "type": "registry:file",
+      "title": "Sakuga Spinner",
+      "description": "A cel-shaded anime kinetic loader drawn on a canvas stepped on the shared SakugaFX clock. One file, no dependencies, defines <sakuga-spinner>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["spinner", "loading", "anime", "animation"],
+      "files": [{ "path": "spinner/spinner.js", "type": "registry:file", "target": "~/public/sakuga-vfx/spinner.js" }],
+      "docs": "Load /sakuga-vfx/spinner.js with a script tag, then use <sakuga-spinner size=\"md\" label=\"Loading...\"></sakuga-spinner>."
+    },
+    {
+      "name": "stat",
+      "type": "registry:file",
+      "title": "Sakuga Stat",
+      "description": "A manga KPI stat card that pops on spring physics on value updates or hit(), with a slanted delta stamp, corner ticks, and kira glint. One file, no dependencies, defines <sakuga-stat>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["stat", "kpi", "data", "anime", "animation"],
+      "files": [{ "path": "stat/stat.js", "type": "registry:file", "target": "~/public/sakuga-vfx/stat.js" }],
+      "docs": "Load /sakuga-vfx/stat.js with a script tag, then use <sakuga-stat label=\"Total\" value=\"18.50 h\" delta=\"+1.20h\" tone=\"pri\"></sakuga-stat>."
+    },
+    {
+      "name": "stepper",
+      "type": "registry:file",
+      "title": "Sakuga Stepper",
+      "description": "A 4-step manga workflow tracker in a 2x2 grid or row that pops and draws checkmarks with wedges and kira glint when steps complete. One file, no dependencies, defines <sakuga-stepper>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["stepper", "workflow", "anime", "animation"],
+      "files": [{ "path": "stepper/stepper.js", "type": "registry:file", "target": "~/public/sakuga-vfx/stepper.js" }],
+      "docs": "Load /sakuga-vfx/stepper.js with a script tag, then use <sakuga-stepper layout=\"grid\"><option data-state=\"done\">Step 1</option>...</sakuga-stepper>."
+    },
+    {
+      "name": "table",
+      "type": "registry:file",
+      "title": "Sakuga Table",
+      "description": "A manga-framed scrollable data table container with an empty-state stamp and a snappy sweep() refresh beat. One file, no dependencies, defines <sakuga-table>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["table", "data", "anime", "animation"],
+      "files": [{ "path": "table/table.js", "type": "registry:file", "target": "~/public/sakuga-vfx/table.js" }],
+      "docs": "Load /sakuga-vfx/table.js with a script tag, then wrap a <table> inside <sakuga-table max-height=\"360px\">...</sakuga-table>."
+    },
+    {
+      "name": "textarea",
+      "type": "registry:file",
+      "title": "Sakuga Textarea",
+      "description": "A multiline manga text area with caret dust puffs, Enter speed-line sweep, character counter pill, and Ctrl/Cmd+Enter sakuga:commit. One file, no dependencies, defines <sakuga-textarea>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["textarea", "input", "text", "anime", "animation"],
+      "files": [{ "path": "textarea/textarea.js", "type": "registry:file", "target": "~/public/sakuga-vfx/textarea.js" }],
+      "docs": "Load /sakuga-vfx/textarea.js with a script tag, then use <sakuga-textarea label=\"Notes\" rows=\"4\" maxlength=\"200\"></sakuga-textarea>."
     }
   ]
 }

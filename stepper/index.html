@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Stepper</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; min-height: 240px; padding: 36px 0; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Stepper</h1>
+  <p class="sub">4-step manga workflow tracker with celebratory completion beats.</p>
+  <div class="stage">
+  <div style="display:grid;gap:16px;width:min(480px,100%)">
+    <sakuga-stepper id="el" layout="grid" label="Workflow">
+      <option value="1" data-state="done">Connect</option>
+      <option value="2" data-state="active">Compute</option>
+      <option value="3" data-state="idle">Preview</option>
+      <option value="4" data-state="idle">Save</option>
+    </sakuga-stepper>
+    <div style="text-align:center"><button id="adv" type="button" style="padding:8px 16px;border:2px solid #1d1a4a;border-radius:10px;background:#fff;font:700 13.5px/1.2 inherit;cursor:pointer">Advance step</button></div>
+  </div>
+  </div>
+  <p class="hint">Click Advance step to flip each tile to <code>done</code> and watch the completion beat.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="stepper.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+const labels = ['Connect', 'Compute', 'Preview', 'Save'];
+let cur = 1;
+document.getElementById('adv').addEventListener('click', () => {
+  cur = (cur + 1) % 5;
+  el.steps = labels.map((label, i) => ({ label, state: i < cur ? 'done' : i === cur ? 'active' : 'idle' }));
+  say('completed: ' + cur + ' / ' + labels.length);
+});
+</script>
+</body>
+</html>

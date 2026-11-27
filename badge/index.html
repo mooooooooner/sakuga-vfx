@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Badge</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; min-height: 240px; padding: 36px 0; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Badge</h1>
+  <p class="sub">Two-tone manga status stamp, live status chip, and clickable filter pill.</p>
+  <div class="stage">
+  <sakuga-badge tone="green" dot active id="el-status">Connected</sakuga-badge>
+  <sakuga-badge clickable tone="pri" count="12" id="el">Filter</sakuga-badge>
+  <sakuga-badge clickable tone="acc" active id="el2">Featured</sakuga-badge>
+  <sakuga-badge tone="orange" size="md">Beta</sakuga-badge>
+  </div>
+  <p class="hint">Click the filter pills to toggle them, or click Connected to replay its status pop.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="badge.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el'), el2 = document.getElementById('el2'), st = document.getElementById('el-status');
+el.addEventListener('click', () => { el.active = !el.active; say('Filter: ' + (el.active ? 'active' : 'inactive')); });
+el2.addEventListener('click', () => { el2.active = !el2.active; say('Featured: ' + (el2.active ? 'active' : 'inactive')); });
+st.style.cursor = 'pointer';
+st.addEventListener('click', () => { st.pop(); say('pop()'); });
+</script>
+</body>
+</html>

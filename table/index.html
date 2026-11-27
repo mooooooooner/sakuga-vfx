@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Table</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; min-height: 240px; padding: 36px 0; }
+  .hint, .said { margin: 0 4px; color: var(--mute); } .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; } .embed h1, .embed .sub, .embed .hint { display: none; } .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Table</h1>
+  <p class="sub">Manga-framed scrollable data table container with a refresh sweep beat.</p>
+  <div class="stage">
+  <div style="display:grid;gap:14px;width:100%">
+    <sakuga-table id="el" max-height="220px">
+      <table>
+        <thead><tr><th>Date</th><th>Task</th><th>Hours</th></tr></thead>
+        <tbody>
+          <tr><td>2026-04-12</td><td>Release build</td><td>2.5 h</td></tr>
+          <tr><td>2026-04-14</td><td>API migration</td><td>3.0 h</td></tr>
+          <tr><td>2026-04-15</td><td>UI polish</td><td>1.5 h</td></tr>
+        </tbody>
+      </table>
+    </sakuga-table>
+    <div style="text-align:center"><button id="sweep" type="button" style="padding:8px 16px;border:2px solid #1d1a4a;border-radius:10px;background:#fff;font:700 13.5px/1.2 inherit;cursor:pointer">Refresh sweep()</button></div>
+  </div>
+  </div>
+  <p class="hint">Click Refresh to play <code>el.sweep()</code> along the header seam.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="table.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+document.getElementById('sweep').addEventListener('click', () => { el.sweep(); say('sweep()'); });
+</script>
+</body>
+</html>

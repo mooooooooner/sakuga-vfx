@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Donut Chart</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; min-height: 340px; padding: 62px 0 24px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 9px; }
+  .preset { padding: 8px 13px; border: 2.5px solid #1d1a4a; border-radius: 12px; background: #fff; color: #1d1a4a; font: 700 13px/1.2 inherit; cursor: pointer; box-shadow: 3px 4px 0 #b8b3ff; transition: transform 0.08s ease; }
+  .preset:hover { transform: translateY(-1px); }
+  .preset:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #b8b3ff; }
+  .preset.is-on { background: #1d1a4a; color: #fff; box-shadow: 3px 4px 0 #ff5fa8; }
+  .preset.hot { background: #ff5fa8; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .preset.pri { background: #8f8df7; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .variants { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 28px 0 12px; border-top: 2px dashed #e3e1f2; margin-top: 16px; }
+  .v-cap { margin: 0; font: 800 12px/1.2 inherit; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint, .embed .variants { display: none; }
+  .embed main { padding: 0; }
+  .embed .stage { padding: 48px 0 12px; min-height: 0; gap: 18px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Donut Chart</h1>
+  <p class="sub">Cel-shaded anime donut &amp; pie distribution chart with radial slice springs, manga callout, and synchronized legend.</p>
+  <div class="stage">
+    <sakuga-donut-chart id="el" label="Studio Time" unit="h"></sakuga-donut-chart>
+    <div class="controls">
+      <button id="btn-donut" class="preset is-on" type="button">Donut</button>
+      <button id="btn-pie" class="preset" type="button">Pie</button>
+      <button id="btn-ep01" class="preset pri" type="button">Episode 01</button>
+      <button id="btn-ep12" class="preset hot" type="button">Episode 12 Finale</button>
+      <button id="btn-replay" class="preset" type="button">Replay Sweep</button>
+    </div>
+  </div>
+  <div class="variants">
+    <p class="v-cap">Side Legend &amp; Compact Size</p>
+    <sakuga-donut-chart id="el-side" size="sm" legend="side" label="Cut Share" unit=" cuts"></sakuga-donut-chart>
+  </div>
+  <p class="hint">Hover or click any slice or legend pill to pop it out, click the #1 peak slice for a full burst, or use arrow keys + Enter.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="donut-chart.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+
+const EP01 = [
+  { label: 'Key Animation', value: 64, tone: 'pri', sub: 'Genga & layouts' },
+  { label: 'In-Betweening', value: 42, tone: 'acc', sub: 'Douga & cleanup' },
+  { label: 'Background Art', value: 28, tone: 'cyan', sub: 'Painted cels' },
+  { label: 'VFX Compositing', value: 18, tone: 'amber', sub: 'Sakuga effects' },
+  { label: 'Sound Mix', value: 12, tone: 'green', sub: 'Foley & score' },
+];
+
+const EP12 = [
+  { label: 'Key Animation', value: 96, tone: 'acc', sub: 'Climax fight cuts' },
+  { label: 'VFX Compositing', value: 58, tone: 'pri', sub: 'Impact frames & sparks' },
+  { label: 'In-Betweening', value: 38, tone: 'amber', sub: 'Smear frames' },
+  { label: 'Background Art', value: 24, tone: 'cyan', sub: 'Arena destruction' },
+  { label: 'Sound Mix', value: 16, tone: 'green', sub: 'Finale score' },
+];
+
+const el = document.getElementById('el');
+const elSide = document.getElementById('el-side');
+const btnDonut = document.getElementById('btn-donut');
+const btnPie = document.getElementById('btn-pie');
+
+el.items = EP01;
+elSide.items = [
+  { label: 'Action', value: 118, tone: 'acc' },
+  { label: 'Dialogue', value: 84, tone: 'pri' },
+  { label: 'FX Shots', value: 52, tone: 'cyan' },
+  { label: 'Opening', value: 36, tone: 'amber' },
+];
+
+function syncModeBtns() {
+  const isPie = el.mode === 'pie';
+  btnDonut.classList.toggle('is-on', !isPie);
+  btnPie.classList.toggle('is-on', isPie);
+}
+
+btnDonut.addEventListener('click', () => { el.mode = 'donut'; syncModeBtns(); say('mode: donut'); });
+btnPie.addEventListener('click', () => { el.mode = 'pie'; syncModeBtns(); say('mode: pie'); });
+document.getElementById('btn-ep01').addEventListener('click', () => { el.items = EP01; say('dataset: Episode 01 (164h)'); });
+document.getElementById('btn-ep12').addEventListener('click', () => { el.items = EP12; say('dataset: Episode 12 Finale (232h)'); });
+document.getElementById('btn-replay').addEventListener('click', () => { el.replay(); say('replay() sweep'); });
+
+el.addEventListener('select', (e) => {
+  const { index, item, percent } = e.detail;
+  if (index < 0 || !item) say('selection cleared -> Total');
+  else say(`select: ${item.label} — ${item.value}${el.unit} (${percent}%)`);
+});
+</script>
+</body>
+</html>

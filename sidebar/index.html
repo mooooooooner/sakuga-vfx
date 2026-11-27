@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Sidebar</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: start center;
+    background: var(--page); color: var(--text);
+    font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif;
+    overflow-x: clip;
+  }
+  main { width: min(820px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+
+  .workspace {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 32px 0 20px;
+  }
+
+  .stage-card {
+    flex: 1 1 280px;
+    min-width: 0;
+    padding: 22px 24px;
+    border: var(--sk-bw, 3.2px) solid var(--sk-ink, #1d1a4a);
+    border-radius: var(--sk-r, 15px);
+    background: var(--sk-card, #fff);
+    box-shadow: var(--sk-sh, 6px 7px 0 #b8b3ff);
+  }
+  .crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border: 2px solid var(--sk-ink, #1d1a4a);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--sk-soft, #b8b3ff) 32%, #fff);
+    font: 800 11px/1.2 "Avenir Next", "Nunito", -apple-system, sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .crumb-dot {
+    width: 7px; height: 7px;
+    border-radius: 999px;
+    background: var(--sk-acc, #ff5fa8);
+    border: 1.4px solid var(--sk-ink, #1d1a4a);
+  }
+  .route-title {
+    margin: 14px 0 6px;
+    font: italic 900 24px/1.15 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: -0.02em;
+  }
+  .route-desc { margin: 0; color: var(--mute); font-size: 14.5px; }
+
+  .route-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0 20px;
+  }
+  .stat {
+    padding: 10px 12px;
+    border: 2.2px solid var(--sk-ink, #1d1a4a);
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: 3px 3.5px 0 var(--sk-soft, #b8b3ff);
+  }
+  .stat-k {
+    font: 800 10px/1.1 "Avenir Next", "Nunito", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--mute);
+  }
+  .stat-v {
+    margin-top: 4px;
+    font: italic 900 18px/1.1 "Avenir Next", "Nunito", sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 2px solid var(--sk-soft, #b8b3ff);
+  }
+  .ctl {
+    padding: 8px 13px;
+    border: 2.4px solid var(--sk-ink, #1d1a4a);
+    border-radius: 11px;
+    background: #fff;
+    color: var(--text);
+    box-shadow: 3px 4px 0 var(--sk-soft, #b8b3ff);
+    font: 800 13px/1.2 -apple-system, "Segoe UI", sans-serif;
+    cursor: pointer;
+    user-select: none;
+  }
+  .ctl:hover { background: color-mix(in srgb, var(--sk-soft, #b8b3ff) 20%, #fff); }
+  .ctl:active { transform: translate(1px, 1.5px); box-shadow: 1.5px 2px 0 var(--sk-soft, #b8b3ff); }
+  .ctl:focus-visible { outline: 2.5px solid var(--sk-acc, #ff5fa8); outline-offset: 2px; }
+  .ctl.pri { background: var(--sk-acc, #ff5fa8); color: #fff; }
+  .ctl.pri:hover { background: color-mix(in srgb, var(--sk-acc, #ff5fa8) 88%, var(--sk-ink, #1d1a4a)); }
+
+  .foot-chip { display: flex; align-items: center; gap: 9px; min-width: 0; }
+  .foot-av {
+    flex: none; width: 32px; height: 32px; display: grid; place-items: center;
+    border: 2.2px solid var(--sk-ink, #1d1a4a); border-radius: 10px;
+    background: var(--sk-pri, #8f8df7); color: #fff;
+    box-shadow: 2px 2px 0 var(--sk-soft, #b8b3ff);
+    font: italic 900 13px/1 "Avenir Next", "Nunito", sans-serif;
+  }
+  .foot-meta { min-width: 0; overflow: hidden; }
+  .foot-name { font-weight: 800; font-size: 13px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .foot-role { font-size: 11px; color: var(--mute); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  sakuga-sidebar[collapsed] .foot-meta { display: none; }
+
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+
+  @media (max-width: 680px) {
+    .workspace { flex-direction: column; align-items: stretch; gap: 18px; padding: 22px 0 16px; }
+    .stage-card { padding: 18px 16px; }
+    .route-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .stat { padding: 8px 9px; }
+    .stat-v { font-size: 15px; }
+  }
+
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint { display: none; }
+  .embed main { padding: 4px 0; }
+  .embed .workspace { padding: 12px 0 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Sidebar</h1>
+  <p class="sub">Manga vertical navigation rail with a spring-leaping active capsule, collapsible submenus, icon-rail collapse with speech-bubble tooltips, and badge pop glints.</p>
+
+  <div class="workspace">
+    <sakuga-sidebar id="el" collapsible heading="SAKUGA STUDIO" value="dashboard" label="Studio workspace">
+      <optgroup label="Workspace">
+        <option value="dashboard" data-icon="grid">Dashboard</option>
+        <option value="inbox" data-icon="inbox" data-badge="4" data-badge-tone="acc">Inbox</option>
+        <option value="cuts" data-icon="layers" data-badge="12" data-badge-tone="pri">Story Cuts</option>
+        <option value="cuts/keyframes" data-parent="cuts" data-icon="spark">Keyframes</option>
+        <option value="cuts/vfx" data-parent="cuts" data-icon="rocket" data-badge="NEW" data-badge-tone="green">VFX Sheets</option>
+        <option value="cuts/schedule" data-parent="cuts" data-icon="calendar">Schedule</option>
+      </optgroup>
+      <hr>
+      <optgroup label="Studio">
+        <option value="analytics" data-icon="chart">Analytics</option>
+        <option value="team" data-icon="users">Animators</option>
+        <option value="settings" data-icon="sliders">Preferences</option>
+      </optgroup>
+      <div slot="footer" class="foot-chip">
+        <span class="foot-av" aria-hidden="true">SK</span>
+        <div class="foot-meta">
+          <div class="foot-name">Sora Takahashi</div>
+          <div class="foot-role">Key Animator</div>
+        </div>
+      </div>
+    </sakuga-sidebar>
+
+    <section class="stage-card" aria-live="polite">
+      <div class="crumb"><span class="crumb-dot"></span><span id="r-crumb">Workspace / dashboard</span></div>
+      <h2 class="route-title" id="r-title">Dashboard</h2>
+      <p class="route-desc" id="r-desc">Daily cut board, active spring rigs, and studio review queue.</p>
+      <div class="route-stats">
+        <div class="stat"><div class="stat-k">Cuts Ready</div><div class="stat-v" id="s-1">24</div></div>
+        <div class="stat"><div class="stat-k">Frame Rate</div><div class="stat-v" id="s-2">24 fps</div></div>
+        <div class="stat"><div class="stat-k">Status</div><div class="stat-v" id="s-3">LIVE</div></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="ctl" id="btn-collapse">Toggle Rail</button>
+        <button type="button" class="ctl" id="btn-badge">Bump Inbox Badge</button>
+        <button type="button" class="ctl pri" id="btn-deep">Jump to VFX Sheets</button>
+      </div>
+    </section>
+  </div>
+
+  <p class="hint">Click items across groups to see short vs long jump beats, expand Story Cuts, collapse to icon rail and hover icons for speech-bubble tooltips, or use Arrow keys.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="sidebar.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+
+const ROUTES = {
+  dashboard: { crumb: 'Workspace / dashboard', title: 'Dashboard', desc: 'Daily cut board, active spring rigs, and studio review queue.', s: ['24', '24 fps', 'LIVE'] },
+  inbox: { crumb: 'Workspace / inbox', title: 'Inbox', desc: 'Director retake notes, timing sheet approvals, and ink checks.', s: ['4', '12m', 'UNREAD'] },
+  'cuts/keyframes': { crumb: 'Story Cuts / keyframes', title: 'Keyframes', desc: 'Anticipation, impact, and overshoot pose sheets for Episode 04.', s: ['118', 'On 2s', 'INKED'] },
+  'cuts/vfx': { crumb: 'Story Cuts / vfx', title: 'VFX Sheets', desc: 'Cel-shaded smoke puffs, crescent slashes, and hollow manga lettering.', s: ['36', '60 fps', 'HOT'] },
+  'cuts/schedule': { crumb: 'Story Cuts / schedule', title: 'Schedule', desc: 'Cut delivery milestones and compositing lock deadlines.', s: ['6d', '92%', 'ON TIME'] },
+  analytics: { crumb: 'Studio / analytics', title: 'Analytics', desc: 'Frame turnaround velocity and spring settle telemetry.', s: ['98%', '14 ms', 'PEAK'] },
+  team: { crumb: 'Studio / team', title: 'Animators', desc: 'Key animation, in-betweening, and effects layout roster.', s: ['14', '3 pods', 'ACTIVE'] },
+  settings: { crumb: 'Studio / settings', title: 'Preferences', desc: 'Ink stroke weight, cel shadow offsets, and reduced-motion rules.', s: ['3.2 px', '2-tone', 'SAVED'] },
+};
+
+function renderRoute(val) {
+  const r = ROUTES[val] || { crumb: 'Route / ' + val, title: val, desc: 'Selected navigation view.', s: ['--', '--', 'OK'] };
+  document.getElementById('r-crumb').textContent = r.crumb;
+  document.getElementById('r-title').textContent = r.title;
+  document.getElementById('r-desc').textContent = r.desc;
+  document.getElementById('s-1').textContent = r.s[0];
+  document.getElementById('s-2').textContent = r.s[1];
+  document.getElementById('s-3').textContent = r.s[2];
+}
+
+let inboxCount = 4;
+el.addEventListener('change', (e) => {
+  renderRoute(e.detail.value);
+  say(`change → ${e.detail.label} (${e.detail.value}) from ${e.detail.prev || 'none'}`);
+});
+el.addEventListener('sakuga:collapse', (e) => {
+  say(`sakuga:collapse → ${e.detail.collapsed ? 'icon rail' : 'expanded'}`);
+});
+el.addEventListener('sakuga:toggle', (e) => {
+  say(`sakuga:toggle → ${e.detail.value} (${e.detail.expanded ? 'expanded' : 'collapsed'})`);
+});
+
+document.getElementById('btn-collapse').addEventListener('click', () => el.toggleCollapse());
+document.getElementById('btn-badge').addEventListener('click', () => {
+  inboxCount++;
+  el.setBadge('inbox', String(inboxCount));
+  say(`badge → inbox (${inboxCount})`);
+});
+document.getElementById('btn-deep').addEventListener('click', () => {
+  el.select('cuts/vfx');
+});
+renderRoute(el.value);
+</script>
+</body>
+</html>

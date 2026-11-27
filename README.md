@@ -41,6 +41,15 @@ Every effect is drawn in code on one canvas over the page. The lettering was pai
 | [OTP](otp/) | `<sakuga-otp>` | Verification-code and PIN tiles with per-cell spring pops, domino paste wave, completion burst + ドン! (or hollow ポン), and error recoil shake. |
 | [Pagination](pagination/) | `<sakuga-pagination>` | Kinetic spring-leaping page switcher with braking dust, pink wedges, and lavender crescent-slash far jumps (`シュッ`). |
 | [Gauge](gauge/) | `<sakuga-gauge>` | Cel-shaded 240° anime mecha tachometer on a high-DPI canvas with spring needle, slanted readout badge, interactive drag/keys, and redline overdrive VFX (`ドン!`). |
+| [Sidebar](sidebar/) | `<sakuga-sidebar>` | Vertical manga navigation rail with a spring-leaping active capsule, collapsible nested submenus, icon-rail collapse with speech-bubble tooltips, and badge pop glints. |
+| [DateRange](daterange/) | `<sakuga-daterange>` | Twin-field manga date-range picker with dual-month desktop / single-month mobile speech-bubble popover, preset rail, live hover bridge, max-span recoil guard, and slash-to-clear. |
+| [Calendar](calendar/) | `<sakuga-calendar>` | Inline cel-shaded manga calendar with seamless Day, Month, and Year (decade) zoom-cut view switching, event indicator pips, and a spring-animated agenda strip. |
+| [Hold Button](hold-button/) | `<sakuga-hold-button>` | Anime charge-up hold-to-confirm button with dual-layer contrast sweep, rising pebbles, `ゴゴゴゴ` overdrive tension, spring abort recoil, and full-charge detonation (`ドン!`). |
+| [Donut Chart](donut-chart/) | `<sakuga-donut-chart>` | Cel-shaded anime donut & pie distribution chart on a high-DPI canvas with per-slice radial springs, slanted center KPI readout, callout bubble, and synchronized legend pills. |
+| [Line Chart](line-chart/) | `<sakuga-line-chart>` | Cel-shaded anime line & halftone screentone area trend chart with stroke-draw speed entrance, spring crosshair scrubber, multi-series legend chips, and auto-flipping callout. |
+| [Radar](radar/) | `<sakuga-radar>` | Cel-shaded anime power hexagon / stat radar chart with halftone fills, dual-series comparison, S-rank vertex glints, radial stat drag, and `powerUp()` detonation (`ドン!`). |
+| [Pet](pet/) | `<sakuga-pet>` | Interactive cel-shaded anime desktop mascot (`Koma-Neko` & `Koma-Mecha`) with eye tracking, spring scarf/tail, drag & throw bounce physics, speech bubbles, Combo Fever, and Floating Desktop Mode. |
+| [Command](command/) | `<sakuga-command>` | Iconic `⌘K` / `Ctrl+K` anime spotlight command palette modal with caret dust fuzzy search, spring-sliding highlight capsule, shortcut chips, and danger slash execution. |
 
 ## The look
 

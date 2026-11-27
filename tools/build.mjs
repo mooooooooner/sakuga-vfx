@@ -10,6 +10,7 @@ export const NAMES = [
   'button', 'toggle', 'slider', 'checkbox', 'radio', 'input', 'tabs', 'progress', 'rating', 'toast', 'tooltip',
   'badge', 'card', 'chart', 'collapse', 'dialog', 'heatmap', 'number', 'picker', 'segmented', 'spinner', 'stat', 'stepper', 'table', 'textarea',
   'select', 'drawer', 'menu', 'upload', 'tags', 'otp', 'pagination', 'gauge',
+  'sidebar', 'daterange', 'calendar', 'hold-button', 'donut-chart', 'line-chart', 'radar', 'pet', 'command',
 ];
 const check = process.argv.includes('--check');
 const core = readFileSync(join(root, 'core.js'), 'utf8').trim();

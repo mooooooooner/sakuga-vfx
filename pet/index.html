@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Pet</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; min-height: 310px; padding: 72px 0 24px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; max-width: 100%; }
+  .preset { padding: 7px 12px; border: 2.5px solid #1d1a4a; border-radius: 12px; background: #fff; color: #1d1a4a; font: 700 13px/1.2 inherit; cursor: pointer; box-shadow: 3px 4px 0 #b8b3ff; transition: transform 0.08s ease; }
+  .preset:hover { transform: translateY(-1px); }
+  .preset:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #b8b3ff; }
+  .preset.hot { background: #ff5fa8; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .preset.pri { background: #8f8df7; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .preset.is-on { background: #1d1a4a; color: #fff; box-shadow: 3px 4px 0 #ff5fa8; }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint, .embed .controls { display: none; }
+  .embed main { padding: 0; }
+  .embed .stage { padding: 56px 0 12px; min-height: 0; gap: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pet</h1>
+  <p class="sub">Interactive cel-shaded anime desktop mascot with 2D bounce physics, cursor tracking, and floating screen mode.</p>
+  <div class="stage">
+    <sakuga-pet id="el" name="Koma" character="neko"></sakuga-pet>
+    <div class="controls">
+      <button id="btn-fever" class="preset hot" type="button">Celebrate!</button>
+      <button id="btn-say" class="preset" type="button">Say Quip</button>
+      <button id="btn-char" class="preset pri" type="button">Switch: Mecha</button>
+      <button id="btn-reset" class="preset" type="button">Reset</button>
+    </div>
+  </div>
+  <p class="hint">Click Koma to pat (5x for Fever!), drag and throw across the stage, focus and press arrows/J/S/F, or switch to Floating Desktop Mode.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="pet.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+const btnChar = document.getElementById('btn-char');
+
+const CUSTOM_LINES = ['Ready to animate! ★', 'Two tones and a line!', 'Squash & stretch!!', 'Sakuga power 100%!'];
+let lineIdx = 0;
+
+document.getElementById('btn-fever').addEventListener('click', () => { el.celebrate(); say('celebrate() -> FEVER!!'); });
+document.getElementById('btn-say').addEventListener('click', () => {
+  const line = CUSTOM_LINES[(lineIdx++) % CUSTOM_LINES.length];
+  el.say(line, 2400);
+  say(`say("${line}")`);
+});
+btnChar.addEventListener('click', () => {
+  const next = el.character === 'neko' ? 'mecha' : 'neko';
+  el.character = next;
+  el.name = next === 'mecha' ? 'Koma-09' : 'Koma';
+  btnChar.textContent = next === 'mecha' ? 'Switch: Neko' : 'Switch: Mecha';
+  el.say(next === 'mecha' ? 'MECHA ONLINE! ★' : 'Back to Neko~ ♪', 1800);
+  say(`character="${next}"`);
+});
+document.getElementById('btn-reset').addEventListener('click', () => { el.reset(); say('reset()'); });
+
+el.addEventListener('sakuga:pat', (e) => say(`sakuga:pat (combo: ${e.detail.combo})`));
+el.addEventListener('sakuga:mood', (e) => say(`sakuga:mood -> ${e.detail.mood}`));
+el.addEventListener('sakuga:toss', (e) => say(`sakuga:toss (speed: ${e.detail.speed} px/s)`));
+el.addEventListener('sakuga:float', (e) => {
+  say(`sakuga:float -> ${e.detail.floating ? 'floating on viewport' : 'docked in stage'}`);
+});
+</script>
+</body>
+</html>

@@ -84,6 +84,15 @@
 <script src="../otp/otp.js"></script>
 <script src="../pagination/pagination.js"></script>
 <script src="../gauge/gauge.js"></script>
+<script src="../sidebar/sidebar.js"></script>
+<script src="../daterange/daterange.js"></script>
+<script src="../calendar/calendar.js"></script>
+<script src="../hold-button/hold-button.js"></script>
+<script src="../donut-chart/donut-chart.js"></script>
+<script src="../line-chart/line-chart.js"></script>
+<script src="../radar/radar.js"></script>
+<script src="../pet/pet.js"></script>
+<script src="../command/command.js"></script>
 <script>
 // The gallery: every control live on one page, with its install line and a prompt that hands a coding agent the real file.
 const REPO = 'finktheartist/sakuga-vfx';
@@ -122,6 +131,15 @@ const ITEMS = [
   { id: 'tags', name: 'Tags', tag: 'sakuga-tags', how: 'Type and press Enter, click a suggestion, or click × to slash.', html: '<sakuga-tags value="sakuga,cel-shaded,keyframe" max="6" placeholder="Add tag..." suggestions="smear,impact,kachi,anime"></sakuga-tags>', wide: true },
   { id: 'otp', name: 'OTP', tag: 'sakuga-otp', how: 'Type digits, Paste 482916 for the domino burst, or test Error.', html: '<div style="display:grid;justify-items:center;gap:14px;width:100%"><sakuga-otp length="6" separator="3" label="Verification code"></sakuga-otp><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="otp-paste">Paste 482916</button><button class="pill" type="button" data-demo="otp-err">Error</button><button class="pill" type="button" data-demo="otp-clear">Clear</button></div></div>', wide: true },
   { id: 'pagination', name: 'Pagination', tag: 'sakuga-pagination', how: 'Step pages or jump straight to 12 for the crescent slash.', html: '<sakuga-pagination page="1" pages="12" show-edges label="Results"></sakuga-pagination>', wide: true },
+  { id: 'hold-button', name: 'Hold Button', tag: 'sakuga-hold-button', how: 'Press and hold until full charge — or let go early to recoil.', html: '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px"><sakuga-hold-button data-demo="hold-launch" duration="1100" hold-label="Charging..." done-label="Launched!">Hold to Launch</sakuga-hold-button><sakuga-hold-button data-demo="hold-purge" variant="danger" duration="900" hold-label="Purging..." done-label="Purged!">Hold to Purge</sakuga-hold-button></div>' },
+  { id: 'daterange', name: 'DateRange', tag: 'sakuga-daterange', how: 'Open the dual-month bubble, pick a span or preset, or slash-clear.', html: '<sakuga-daterange start="2026-04-08" end="2026-04-15" clearable presets label="Sprint window"></sakuga-daterange>' },
+  { id: 'command', name: 'Command', tag: 'sakuga-command', how: 'Open the ⌘K spotlight palette, search, or run Delete Frame Cache.', html: '<div class="toastwrap"><sakuga-button variant="secondary" data-demo="cmd-open">Open Palette ⌘K</sakuga-button><sakuga-command shortcut="k" placeholder="Type a command or search..."><optgroup label="Animation"><option value="keyframe" data-icon="spark" data-shortcut="⌘N" data-desc="Insert a fresh keyframe">Insert Keyframe</option><option value="render" data-icon="download" data-shortcut="⌘E" data-keywords="export png" data-desc="Export lossless PNG sequence">Render Final Sequence</option></optgroup><optgroup label="Navigation"><option value="layers" data-icon="layers" data-shortcut="G L" data-desc="Jump to cel stack and shadow passes">Jump to Cel Layers</option><option value="console" data-icon="terminal" data-shortcut="⌘J" data-desc="Inspect SakugaFX clock and springs">Toggle FX Console</option></optgroup><optgroup label="Danger Zone"><option value="delete-cache" data-icon="trash" data-shortcut="⌘⌫" data-keywords="delete purge" data-desc="Wipe baked frame cache" data-danger>Delete Frame Cache</option></optgroup></sakuga-command></div>' },
+  { id: 'calendar', name: 'Calendar', tag: 'sakuga-calendar', how: 'Click the month title or pill strip to zoom across Day, Month, and Year views.', html: '<sakuga-calendar value="2026-04-15" label="Production schedule"></sakuga-calendar>', wide: true },
+  { id: 'sidebar', name: 'Sidebar', tag: 'sakuga-sidebar', how: 'Jump across groups, expand Story Cuts, or collapse into the icon rail.', html: '<div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:16px;width:100%"><sakuga-sidebar collapsible heading="SAKUGA STUDIO" value="dashboard" label="Studio navigation"><optgroup label="Workspace"><option value="dashboard" data-icon="grid">Dashboard</option><option value="inbox" data-icon="inbox" data-badge="4">Inbox</option><option value="cuts" data-icon="layers" data-badge="12" data-badge-tone="pri">Story Cuts</option><option value="cuts/keyframes" data-parent="cuts" data-icon="spark">Keyframes</option><option value="cuts/vfx" data-parent="cuts" data-icon="rocket" data-badge="NEW" data-badge-tone="green">VFX Sheets</option></optgroup><hr><optgroup label="Studio"><option value="analytics" data-icon="chart">Analytics</option><option value="settings" data-icon="sliders">Preferences</option></optgroup></sakuga-sidebar></div>' },
+  { id: 'donut-chart', name: 'Donut Chart', tag: 'sakuga-donut-chart', how: 'Click a slice or legend pill to explode it, or morph into Pie mode.', html: '<div style="display:grid;justify-items:center;gap:12px;width:100%"><sakuga-donut-chart size="sm" label="Studio Time" unit="h"></sakuga-donut-chart><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="donut-mode">Toggle Pie</button><button class="pill" type="button" data-demo="donut-replay">Replay</button></div></div>' },
+  { id: 'radar', name: 'Radar', tag: 'sakuga-radar', how: 'Drag vertices radially, compare a rival series, or hit Power Up!', html: '<div style="display:grid;justify-items:center;gap:12px;width:100%"><sakuga-radar size="sm" show-ranks interactive label="Animator Power"></sakuga-radar><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="radar-rival">Compare Rival</button><button class="pill" type="button" data-demo="radar-power">Power Up!</button></div></div>' },
+  { id: 'line-chart', name: 'Line Chart', tag: 'sakuga-line-chart', how: 'Scrub the crosshair, click to pin a peak, or toggle Smooth / Dual Compare.', html: '<div style="display:grid;gap:12px;width:100%"><sakuga-line-chart area label="Weekly Output" unit=" cuts" style="width:100%"></sakuga-line-chart><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="line-smooth">Toggle Smooth</button><button class="pill" type="button" data-demo="line-dual">Dual Compare</button><button class="pill" type="button" data-demo="line-replay">Replay</button></div></div>', wide: true },
+  { id: 'pet', name: 'Desktop Pet', tag: 'sakuga-pet', how: 'Click Koma to pat (5× for Fever!), drag & toss, switch to Mecha, or float on screen.', html: '<div style="display:grid;justify-items:center;gap:12px;width:100%"><sakuga-pet name="Koma" character="neko" style="--sk-pet-width:min(320px,100%)"></sakuga-pet><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><button class="pill" type="button" data-demo="pet-char">Switch Mecha</button><button class="pill" type="button" data-demo="pet-fever">Celebrate!</button></div></div>', wide: true },
 ];
 
 // What each prompt says about wiring its component in. The rest of the prompt is the same for all of them.
@@ -198,6 +216,24 @@ const WIRE = {
     'Call el.go(page), el.prev(), el.next(), el.first(), or el.last(); listen for change (e.detail: page, prev, pages).'],
   gauge: ['Use <sakuga-gauge value="25" min="0" max="100" unit="%" label="Boost" interactive></sakuga-gauge>.',
     'Call el.set(val) or el.rev(peak); customize warn, overdrive, size (sm/md/lg), and tone (pri/acc/green/amber). Listen for sakuga:overdrive, input, and change.'],
+  sidebar: ['Use <sakuga-sidebar collapsible heading="STUDIO" value="dashboard"> with <optgroup>/<option> children (data-icon, data-badge, data-parent) or assign el.items.',
+    'Call el.select(val), el.toggleCollapse(), el.toggleGroup(val), or el.setBadge(val, text); listen for change, sakuga:collapse, and sakuga:toggle.'],
+  daterange: ['Use <sakuga-daterange start="2026-04-08" end="2026-04-15" clearable presets label="..."></sakuga-daterange> (optional min, max, max-span, inline).',
+    'Read el.start, el.end, el.days, and el.value ("YYYY-MM-DD..YYYY-MM-DD"); works in forms with a name and fires change and sakuga:reject.'],
+  calendar: ['Use <sakuga-calendar value="2026-04-15" label="..."></sakuga-calendar> and optionally assign el.events = [{ date, title, tone }].',
+    'Call el.setView("day"|"month"|"year"), el.goTo(y, m), or el.today(); works in forms with a name and fires change, sakuga:view-change, and sakuga:navigate.'],
+  'hold-button': ['Use <sakuga-hold-button duration="1200" hold-label="Charging..." done-label="Launched!">Hold to Launch</sakuga-hold-button> (variant="danger" for destructive actions).',
+    'Listen for sakuga:confirm and sakuga:cancel; call el.reset() or el.trigger(). Supports pointer, touch, and keyboard Space/Enter hold.'],
+  'donut-chart': ['Place <sakuga-donut-chart mode="donut" label="Studio Time" unit="h"></sakuga-donut-chart> and assign el.items = [{ label, value, tone? }].',
+    'Supports mode="donut" | "pie", size (sm/md/lg), legend (bottom/side/none), el.select(i), el.replay(), and el.impact(); fires select and change.'],
+  'line-chart': ['Place <sakuga-line-chart area label="Weekly Output" unit=" cuts"></sakuga-line-chart> and assign el.items or el.labels + el.series.',
+    'Toggle area, smooth, show-dots, and show-grid; call el.replay() or el.select(i). Listen for hover and select.'],
+  radar: ['Place <sakuga-radar show-ranks interactive label="Animator Power"></sakuga-radar> and assign el.items or el.axes + el.series.',
+    'Call el.powerUp() or el.replay(); listen for select, input, change, and sakuga:srank.'],
+  pet: ['Use <sakuga-pet name="Koma" character="neko"></sakuga-pet> (character="mecha" for the mecha variant; add floating for fixed desktop overlay mode).',
+    'Call el.pat(), el.jump(), el.dash(), el.sleep(), el.celebrate(), el.say("..."), or el.toggleFloat(); listen for sakuga:pat, sakuga:mood, sakuga:toss, and sakuga:float.'],
+  command: ['Place <sakuga-command shortcut="k"> with <optgroup>/<option> children (data-icon, data-shortcut, data-desc, data-danger) or assign el.items.',
+    'Call el.show(), el.close(), or press ⌘K / Ctrl+K; listen for select, open, close, and sakuga:search.'],
 };
 const SKILL = { url: new URL('../skills/sakuga-vfx/SKILL.md', location.href).href, install: `npx skills add ${REPO}` };
 const fileUrl = (id) => new URL(`../${id}/${id}.js`, location.href).href;
@@ -313,6 +349,121 @@ for (const it of ITEMS) {
     el.addEventListener('sakuga:complete', (e) => say(`sakuga:complete: ${e.detail.value}`));
   }
   else if (it.tag === 'sakuga-pagination') el.addEventListener('change', (e) => say(`page ${e.detail.page} / ${e.detail.pages}`));
+  else if (it.tag === 'sakuga-hold-button') {
+    for (const hb of card.querySelectorAll('sakuga-hold-button')) {
+      hb.addEventListener('sakuga:cancel', (e) => say(`cancelled at ${Math.round(e.detail.progress * 100)}%`));
+      hb.addEventListener('sakuga:confirm', (e) => say(`sakuga:confirm (${e.detail.variant})!`));
+    }
+  }
+  else if (it.tag === 'sakuga-daterange') {
+    el.addEventListener('change', (e) => {
+      const { start, end, days } = e.detail;
+      say(start && end ? `${start} → ${end} (${days}d)` : '(cleared)');
+    });
+    el.addEventListener('sakuga:reject', (e) => say(`rejected (${e.detail.reason})`));
+  }
+  else if (it.tag === 'sakuga-command') {
+    card.querySelector('[data-demo=cmd-open]').addEventListener('click', () => el.show());
+    el.addEventListener('select', (e) => say(`ran: ${e.detail.item.danger ? '[DANGER] ' : ''}${e.detail.label}`));
+    el.addEventListener('close', (e) => { if (!said.textContent.startsWith('ran:')) say(`closed (${e.detail.reason})`); });
+  }
+  else if (it.tag === 'sakuga-calendar') {
+    el.events = [
+      { date: '2026-04-06', title: 'Storyboard Lock', tone: 'pri' },
+      { date: '2026-04-15', title: 'Key Animation Review', tone: 'acc' },
+      { date: '2026-04-15', title: 'Sakuga Reel Export', tone: 'pri' },
+      { date: '2026-04-22', title: 'Color Script Lock', tone: 'green' },
+      { date: '2026-05-04', title: 'Compositing Pass', tone: 'amber' },
+      { date: '2026-05-16', title: 'Episode Premiere', tone: 'acc' },
+    ];
+    el.addEventListener('change', (e) => say(`date: ${e.detail.value}${e.detail.events.length ? ` (${e.detail.events.length} events)` : ''}`));
+    el.addEventListener('sakuga:view-change', (e) => say(`view: ${e.detail.view}`));
+  }
+  else if (it.tag === 'sakuga-sidebar') {
+    el.addEventListener('change', (e) => say(`route: ${e.detail.label} (${e.detail.value})`));
+    el.addEventListener('sakuga:collapse', (e) => say(e.detail.collapsed ? 'icon rail' : 'expanded'));
+    el.addEventListener('sakuga:toggle', (e) => say(`${e.detail.value}: ${e.detail.expanded ? 'expanded' : 'collapsed'}`));
+  }
+  else if (it.tag === 'sakuga-donut-chart') {
+    el.items = [
+      { label: 'Key Animation', value: 64, tone: 'pri' },
+      { label: 'In-Betweening', value: 42, tone: 'acc' },
+      { label: 'Background Art', value: 28, tone: 'cyan' },
+      { label: 'VFX', value: 18, tone: 'amber' },
+      { label: 'Sound', value: 12, tone: 'green' },
+    ];
+    const modeBtn = card.querySelector('[data-demo=donut-mode]');
+    modeBtn.addEventListener('click', () => {
+      el.mode = el.mode === 'donut' ? 'pie' : 'donut';
+      modeBtn.textContent = el.mode === 'donut' ? 'Toggle Pie' : 'Toggle Donut';
+      say(`mode: ${el.mode}`);
+    });
+    card.querySelector('[data-demo=donut-replay]').addEventListener('click', () => { el.replay(); say('replayed sweep'); });
+    el.addEventListener('select', (e) => say(e.detail.index >= 0 ? `${e.detail.item.label}: ${e.detail.item.value}h (${e.detail.percent}%)` : 'total view'));
+  }
+  else if (it.tag === 'sakuga-radar') {
+    const rAxes = ['Sakuga', 'Timing', 'Impact', 'Linework', 'Smear', 'Pacing'];
+    const rA = [96, 91, 82, 94, 78, 86], rB = [92, 80, 98, 74, 95, 85];
+    el.items = rAxes.map((label, i) => ({ label, value: rA[i] }));
+    let rivalOn = false;
+    const rivalBtn = card.querySelector('[data-demo=radar-rival]');
+    rivalBtn.addEventListener('click', () => {
+      rivalOn = !rivalOn;
+      rivalBtn.textContent = rivalOn ? 'Single Series' : 'Compare Rival';
+      if (rivalOn) {
+        el.axes = rAxes;
+        el.series = [
+          { name: 'Unit-01', tone: 'pri', values: rA.slice() },
+          { name: 'Rival', tone: 'acc', values: rB.slice() },
+        ];
+        say('comparing Unit-01 vs Rival');
+      } else {
+        el.items = rAxes.map((label, i) => ({ label, value: rA[i] }));
+        say('single series');
+      }
+    });
+    card.querySelector('[data-demo=radar-power]').addEventListener('click', () => { el.powerUp(); say('POWER UP!'); });
+    el.addEventListener('select', (e) => say(`${e.detail.label}: ${e.detail.value} (${e.detail.rank})`));
+    el.addEventListener('sakuga:srank', (e) => say(`S-RANK! ${e.detail.label}: ${e.detail.value}`));
+  }
+  else if (it.tag === 'sakuga-line-chart') {
+    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const single = [18, 32, 26, 48, 41, 64, 52].map((value, i) => ({ label: labels[i], value }));
+    el.items = single;
+    let dualOn = false;
+    const smBtn = card.querySelector('[data-demo=line-smooth]');
+    const duBtn = card.querySelector('[data-demo=line-dual]');
+    smBtn.addEventListener('click', () => { el.smooth = !el.smooth; smBtn.textContent = el.smooth ? 'Toggle Sharp' : 'Toggle Smooth'; say(el.smooth ? 'smooth spline' : 'sharp polyline'); });
+    duBtn.addEventListener('click', () => {
+      dualOn = !dualOn;
+      duBtn.textContent = dualOn ? 'Single Series' : 'Dual Compare';
+      if (dualOn) {
+        el.labels = labels;
+        el.series = [
+          { name: 'Key Frames', tone: 'pri', data: [18, 32, 26, 48, 41, 64, 52] },
+          { name: 'In-Betweens', tone: 'acc', data: [12, 24, 34, 30, 51, 44, 58] },
+        ];
+        say('dual series compare');
+      } else {
+        el.items = single;
+        say('single series');
+      }
+    });
+    card.querySelector('[data-demo=line-replay]').addEventListener('click', () => { el.replay(); say('replayed draw'); });
+    el.addEventListener('select', (e) => say(e.detail.index >= 0 ? `pinned ${e.detail.label}: ${e.detail.value} cuts` : 'unpinned'));
+  }
+  else if (it.tag === 'sakuga-pet') {
+    const charBtn = card.querySelector('[data-demo=pet-char]');
+    charBtn.addEventListener('click', () => {
+      const next = el.character === 'neko' ? 'mecha' : 'neko';
+      el.character = next;
+      charBtn.textContent = next === 'neko' ? 'Switch Mecha' : 'Switch Neko';
+      say(`character: ${next}`);
+    });
+    card.querySelector('[data-demo=pet-fever]').addEventListener('click', () => { el.celebrate(); say('FEVER!!'); });
+    el.addEventListener('sakuga:pat', (e) => say(`pat! combo ×${e.detail.combo}`));
+    el.addEventListener('sakuga:float', (e) => say(e.detail.floating ? 'floating on screen!' : 'docked in stage'));
+  }
   else if (it.tag !== 'sakuga-spinner') el.addEventListener('change', () => say(`change: ${it.tag === 'sakuga-toggle' || it.tag === 'sakuga-checkbox' ? (el.checked ? 'on' : 'off') : el.value}`));
 }
 // Copying needs the clipboard API, which plain http (other than localhost) does not have, so fall back to a selected textarea.

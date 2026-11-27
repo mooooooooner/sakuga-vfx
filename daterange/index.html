@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga DateRange</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(740px, 100vw - 32px); padding: 40px 0 64px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 22px; padding: 34px 0 24px; }
+  .demo { display: flex; flex-direction: column; gap: 6px; max-width: 100%; }
+  .demo-lbl { font: italic 800 11.5px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; letter-spacing: .04em; text-transform: uppercase; color: var(--mute); padding-left: 2px; }
+  .inline-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 0 24px; max-width: 100%; }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; font-variant-numeric: tabular-nums; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint, .embed .inline-wrap { display: none; }
+  .embed main { padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>DateRange</h1>
+  <p class="sub">Twin-field manga date-range picker with dual-month speech-bubble popover, preset rail, live hover bridge, and max-span guard.</p>
+  <div class="stage">
+    <div class="demo">
+      <span class="demo-lbl">Dual-Month · Presets · Clearable</span>
+      <sakuga-daterange id="el" start="2026-04-08" end="2026-04-15" clearable presets label="Sprint window"></sakuga-daterange>
+    </div>
+    <div class="demo">
+      <span class="demo-lbl">Constrained · Max 7 Days</span>
+      <sakuga-daterange id="el-max" max-span="7" clearable label="Max 7-day range" placeholder-start="From" placeholder-end="To"></sakuga-daterange>
+    </div>
+    <div class="demo">
+      <span class="demo-lbl">Compact</span>
+      <sakuga-daterange id="el-compact" compact clearable presets="today,7d,14d" start="2026-04-01" end="2026-04-07" label="Compact window" style="--sk-daterange-width: 288px"></sakuga-daterange>
+    </div>
+  </div>
+  <div class="inline-wrap">
+    <span class="demo-lbl">Inline Range Calendar</span>
+    <sakuga-daterange id="el-inline" inline clearable start="2026-04-10" end="2026-04-22" label="Inline date range"></sakuga-daterange>
+  </div>
+  <p class="hint">Pick a start and end date, sweep a quick preset, try exceeding 7 days on the constrained picker, or slash a range clear.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="daterange.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+for (const [id, name] of [['el', 'sprint'], ['el-max', 'max-7d'], ['el-compact', 'compact'], ['el-inline', 'inline']]) {
+  const dr = document.getElementById(id);
+  dr.addEventListener('change', (e) => {
+    const { start, end, days } = e.detail;
+    say(start && end ? `${name}: ${start} → ${end} (${days} ${days === 1 ? 'day' : 'days'})` : `${name}: (cleared)`);
+  });
+  dr.addEventListener('sakuga:open', () => say(`${name}: opened`));
+  dr.addEventListener('sakuga:close', () => {
+    if (!document.querySelector('.said').textContent.startsWith(`${name}: `)) say(`${name}: closed`);
+  });
+  dr.addEventListener('sakuga:reject', (e) => {
+    say(`${name}: rejected (${e.detail.reason}, ${e.detail.days}d > max ${e.detail.maxSpan}d)`);
+  });
+}
+</script>
+</body>
+</html>

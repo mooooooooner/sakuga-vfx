@@ -452,6 +452,96 @@
       "categories": ["gauge", "meter", "chart", "data", "anime", "animation"],
       "files": [{ "path": "gauge/gauge.js", "type": "registry:file", "target": "~/public/sakuga-vfx/gauge.js" }],
       "docs": "Load /sakuga-vfx/gauge.js with a script tag, then use <sakuga-gauge value=\"25\" label=\"Boost\" unit=\"%\" interactive></sakuga-gauge>. Call el.set(val) or el.rev(); listen for sakuga:overdrive."
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:file",
+      "title": "Sakuga Sidebar",
+      "description": "Vertical manga navigation rail with a spring-leaping active capsule, collapsible nested submenus, icon-rail collapse mode with speech-bubble tooltips, and badge pop glints. One file, no dependencies, defines <sakuga-sidebar>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["sidebar", "navigation", "menu", "layout", "anime", "animation"],
+      "files": [{ "path": "sidebar/sidebar.js", "type": "registry:file", "target": "~/public/sakuga-vfx/sidebar.js" }],
+      "docs": "Load /sakuga-vfx/sidebar.js with a script tag, then use <sakuga-sidebar collapsible heading=\"STUDIO\" value=\"dashboard\">...</sakuga-sidebar> with <optgroup>/<option> children or el.items. Listen for change, sakuga:collapse, and sakuga:toggle."
+    },
+    {
+      "name": "daterange",
+      "type": "registry:file",
+      "title": "Sakuga DateRange",
+      "description": "Twin-field manga date-range picker with dual-month desktop and single-month mobile speech-bubble popover, preset rail, live hover range bridge, max-span recoil guard, and slash-to-clear. One file, no dependencies, defines <sakuga-daterange>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["daterange", "date", "calendar", "picker", "input", "form", "anime", "animation"],
+      "files": [{ "path": "daterange/daterange.js", "type": "registry:file", "target": "~/public/sakuga-vfx/daterange.js" }],
+      "docs": "Load /sakuga-vfx/daterange.js with a script tag, then use <sakuga-daterange start=\"2026-04-08\" end=\"2026-04-15\" clearable presets></sakuga-daterange>. Works in forms with a name; fires change and sakuga:reject."
+    },
+    {
+      "name": "calendar",
+      "type": "registry:file",
+      "title": "Sakuga Calendar",
+      "description": "Inline cel-shaded manga calendar with seamless Day, Month, and Year (decade) zoom-cut view switching, event indicator pips, and a spring-animated agenda strip. One file, no dependencies, defines <sakuga-calendar>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["calendar", "date", "input", "form", "anime", "animation"],
+      "files": [{ "path": "calendar/calendar.js", "type": "registry:file", "target": "~/public/sakuga-vfx/calendar.js" }],
+      "docs": "Load /sakuga-vfx/calendar.js with a script tag, then use <sakuga-calendar value=\"2026-04-15\"></sakuga-calendar> and optionally assign el.events. Works in forms with a name; fires change, sakuga:view-change, and sakuga:navigate."
+    },
+    {
+      "name": "hold-button",
+      "type": "registry:file",
+      "title": "Sakuga Hold Button",
+      "description": "Anime charge-up hold-to-confirm button with dual-layer white-over-fill contrast sweep, rising cel pebbles, ゴゴゴゴ overdrive tension, spring abort recoil, and full-charge impact detonation with ドン!. One file, no dependencies, defines <sakuga-hold-button>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["button", "hold", "confirm", "action", "anime", "animation"],
+      "files": [{ "path": "hold-button/hold-button.js", "type": "registry:file", "target": "~/public/sakuga-vfx/hold-button.js" }],
+      "docs": "Load /sakuga-vfx/hold-button.js with a script tag, then use <sakuga-hold-button duration=\"1200\" hold-label=\"Charging...\" done-label=\"Launched!\">Hold to Launch</sakuga-hold-button>. Listen for sakuga:confirm and sakuga:cancel."
+    },
+    {
+      "name": "donut-chart",
+      "type": "registry:file",
+      "title": "Sakuga Donut Chart",
+      "description": "Cel-shaded anime donut and pie distribution chart on a high-DPI shared-clock canvas with per-slice radial springs, slanted center KPI readout, manga callout bubble, and synchronized legend pills. One file, no dependencies, defines <sakuga-donut-chart>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["chart", "donut", "pie", "data", "statistics", "anime", "animation"],
+      "files": [{ "path": "donut-chart/donut-chart.js", "type": "registry:file", "target": "~/public/sakuga-vfx/donut-chart.js" }],
+      "docs": "Load /sakuga-vfx/donut-chart.js with a script tag, use <sakuga-donut-chart label=\"Studio Time\" unit=\"h\"></sakuga-donut-chart>, and assign el.items. Supports mode=\"donut\" | \"pie\" and fires select / change."
+    },
+    {
+      "name": "line-chart",
+      "type": "registry:file",
+      "title": "Sakuga Line Chart",
+      "description": "Cel-shaded anime line and halftone screentone area trend chart on a high-DPI canvas with stroke-draw speed entrance, spring crosshair scrubber, multi-series legend chips, and auto-flipping manga speech-bubble callout. One file, no dependencies, defines <sakuga-line-chart>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["chart", "line", "area", "data", "statistics", "anime", "animation"],
+      "files": [{ "path": "line-chart/line-chart.js", "type": "registry:file", "target": "~/public/sakuga-vfx/line-chart.js" }],
+      "docs": "Load /sakuga-vfx/line-chart.js with a script tag, use <sakuga-line-chart area smooth unit=\" cuts\"></sakuga-line-chart>, and assign el.items or el.labels + el.series. Fires hover and select."
+    },
+    {
+      "name": "radar",
+      "type": "registry:file",
+      "title": "Sakuga Radar",
+      "description": "Cel-shaded anime power hexagon / stat radar chart on a high-DPI shared-clock canvas with halftone screentone fills, dual-series comparison, S-rank vertex glints, radial stat drag, speech-bubble callout, and powerUp() impact detonation. One file, no dependencies, defines <sakuga-radar>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["chart", "radar", "hexagon", "data", "statistics", "anime", "animation"],
+      "files": [{ "path": "radar/radar.js", "type": "registry:file", "target": "~/public/sakuga-vfx/radar.js" }],
+      "docs": "Load /sakuga-vfx/radar.js with a script tag, use <sakuga-radar show-ranks interactive label=\"Animator Power\"></sakuga-radar>, and assign el.items or el.axes + el.series. Call el.powerUp(); listen for select, change, and sakuga:srank."
+    },
+    {
+      "name": "pet",
+      "type": "registry:file",
+      "title": "Sakuga Pet",
+      "description": "Interactive cel-shaded anime desktop mascot (Koma-Neko & Koma-Mecha) on a high-DPI canvas with cursor eye tracking, spring-chain scarf and tail, pick-up/drag/throw 2D bounce physics, manga speech bubbles, Combo Fever backflips, and Floating Desktop Mode. One file, no dependencies, defines <sakuga-pet>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["pet", "mascot", "desktop", "interactive", "anime", "animation"],
+      "files": [{ "path": "pet/pet.js", "type": "registry:file", "target": "~/public/sakuga-vfx/pet.js" }],
+      "docs": "Load /sakuga-vfx/pet.js with a script tag, then use <sakuga-pet name=\"Koma\" character=\"neko\"></sakuga-pet>. Call pat(), jump(), dash(), sleep(), celebrate(), say(text), or toggleFloat(); listen for sakuga:pat, sakuga:mood, sakuga:toss, and sakuga:float."
+    },
+    {
+      "name": "command",
+      "type": "registry:file",
+      "title": "Sakuga Command",
+      "description": "Iconic ⌘K / Ctrl+K anime spotlight command palette modal with caret dust fuzzy search, spring-sliding cel highlight capsule, grouped actions, shortcut chips, and danger slash execution. One file, no dependencies, defines <sakuga-command>.",
+      "author": "Justin Finkelman <https://github.com/finktheartist>",
+      "categories": ["command", "palette", "search", "modal", "navigation", "anime", "animation"],
+      "files": [{ "path": "command/command.js", "type": "registry:file", "target": "~/public/sakuga-vfx/command.js" }],
+      "docs": "Load /sakuga-vfx/command.js with a script tag, then use <sakuga-command shortcut=\"k\">...</sakuga-command> with <optgroup>/<option> children or el.items. Call el.show() / el.close(); listen for select and sakuga:search."
     }
   ]
 }

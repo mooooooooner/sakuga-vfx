@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Line Chart</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: var(--page); color: var(--text);
+    font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif;
+    overflow-x: clip;
+  }
+  main { width: min(700px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage {
+    display: flex; flex-direction: column; align-items: stretch; justify-content: center;
+    gap: 20px; padding: 60px 0 20px;
+  }
+  .controls {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px;
+  }
+  .btn {
+    padding: 7px 13px; border: 2.5px solid #1d1a4a; border-radius: 12px;
+    background: #fff; color: #1d1a4a; font: 800 13px/1.2 inherit; cursor: pointer;
+    box-shadow: 3px 4px 0 #b8b3ff; transition: transform 0.08s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #b8b3ff; }
+  .btn.on { background: #8f8df7; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .btn.hot { background: #ff5fa8; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .btn:focus-visible { outline: 2.5px solid #ff5fa8; outline-offset: 3px; }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint { display: none; }
+  .embed main { padding: 0; }
+  .embed .stage { padding: 44px 0 10px; gap: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Line Chart</h1>
+  <p class="sub">Cel-shaded anime line &amp; halftone area chart with stroke-draw entrance, spring crosshair scrubber, and manga speech-bubble callout.</p>
+  <div class="stage">
+    <sakuga-line-chart id="el" area label="Weekly Output" unit=" cuts"></sakuga-line-chart>
+    <div class="controls">
+      <button id="btn-area" class="btn on" type="button" aria-pressed="true">Area: On</button>
+      <button id="btn-smooth" class="btn" type="button" aria-pressed="false">Curve: Sharp</button>
+      <button id="btn-series" class="btn" type="button" aria-pressed="false">Series: Single</button>
+      <button id="btn-replay" class="btn hot" type="button">Replay Draw</button>
+    </div>
+  </div>
+  <p class="hint">Hover or drag across the canvas (or focus and press <code>&larr;</code>/<code>&rarr;</code>) to scrub points; click or press <code>Enter</code> to pin a station.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="line-chart.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+
+const SINGLE_ITEMS = [
+  { label: 'Mon', value: 18 },
+  { label: 'Tue', value: 32 },
+  { label: 'Wed', value: 26 },
+  { label: 'Thu', value: 48 },
+  { label: 'Fri', value: 41 },
+  { label: 'Sat', value: 64 },
+  { label: 'Sun', value: 52 },
+];
+
+const DUAL_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DUAL_SERIES = [
+  { name: 'Key Frames', tone: 'pri', data: [18, 32, 26, 48, 41, 64, 52] },
+  { name: 'In-Betweens', tone: 'acc', data: [12, 24, 34, 30, 51, 44, 58] },
+];
+
+el.items = SINGLE_ITEMS;
+
+let isDual = false;
+const btnArea = document.getElementById('btn-area');
+const btnSmooth = document.getElementById('btn-smooth');
+const btnSeries = document.getElementById('btn-series');
+const btnReplay = document.getElementById('btn-replay');
+
+btnArea.addEventListener('click', () => {
+  el.area = !el.area;
+  btnArea.classList.toggle('on', el.area);
+  btnArea.setAttribute('aria-pressed', String(el.area));
+  btnArea.textContent = el.area ? 'Area: On' : 'Area: Line';
+  say(el.area ? 'mode: halftone area' : 'mode: line only');
+});
+
+btnSmooth.addEventListener('click', () => {
+  el.smooth = !el.smooth;
+  btnSmooth.classList.toggle('on', el.smooth);
+  btnSmooth.setAttribute('aria-pressed', String(el.smooth));
+  btnSmooth.textContent = el.smooth ? 'Curve: Smooth' : 'Curve: Sharp';
+  say(el.smooth ? 'curve: monotone smooth' : 'curve: sharp manga');
+});
+
+btnSeries.addEventListener('click', () => {
+  isDual = !isDual;
+  btnSeries.classList.toggle('on', isDual);
+  btnSeries.setAttribute('aria-pressed', String(isDual));
+  btnSeries.textContent = isDual ? 'Series: Dual Compare' : 'Series: Single';
+  if (isDual) {
+    el.labels = DUAL_LABELS;
+    el.series = DUAL_SERIES;
+    say('series: Dual Compare (Key Frames vs In-Betweens)');
+  } else {
+    el.items = SINGLE_ITEMS;
+    say('series: Single (Weekly Output)');
+  }
+});
+
+btnReplay.addEventListener('click', () => {
+  el.replay();
+  say('replay() stroke-draw entrance');
+});
+
+el.addEventListener('hover', (e) => {
+  const d = e.detail;
+  const txt = d.values.map((v) => `${d.values.length > 1 ? v.name + ' ' : ''}${v.value}${el.unit}`).join(' · ');
+  say(`hover: ${d.label} — ${txt}`);
+});
+
+el.addEventListener('select', (e) => {
+  const d = e.detail;
+  if (d.index < 0) {
+    say('select: cleared');
+    return;
+  }
+  const txt = d.values.map((v) => `${d.values.length > 1 ? v.name + ' ' : ''}${v.value}${el.unit}`).join(' · ');
+  say(`select (pinned): ${d.label} — ${txt}`);
+});
+</script>
+</body>
+</html>

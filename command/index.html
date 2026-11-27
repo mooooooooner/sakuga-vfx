@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Command</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; --soft: #b8b3ff; --acc: #ff5fa8; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; min-height: 220px; padding: 36px 0; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 18px; border: 3px solid var(--text); border-radius: 14px;
+    background: #fff; color: var(--text);
+    box-shadow: 5px 6px 0 var(--soft);
+    font: 800 15px/1.2 inherit; cursor: pointer;
+    user-select: none; -webkit-user-select: none;
+  }
+  .btn:hover { background: color-mix(in srgb, var(--soft) 18%, #fff); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 2px 3px 0 var(--soft); }
+  .btn.pri { background: var(--text); color: #fff; box-shadow: 5px 6px 0 var(--acc); }
+  .btn.pri:hover { background: #292466; }
+  .btn.sub-btn { padding: 9px 14px; border-width: 2.5px; border-radius: 12px; font-size: 13.5px; box-shadow: 3px 4px 0 var(--soft); }
+  .btn.danger-btn { border-color: var(--acc); color: var(--acc); box-shadow: 3px 4px 0 color-mix(in srgb, var(--acc) 36%, #fff); }
+  .keycap {
+    display: inline-grid; place-items: center; padding: 3px 8px;
+    border: 2px solid #fff; border-radius: 7px;
+    background: var(--acc); color: #fff;
+    font: italic 900 12px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: 0.04em; transform: skewX(-8deg);
+  }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--text); }
+  code { font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint { display: none; }
+  .embed main { padding: 0; }
+  @media (max-width: 440px) {
+    .stage { gap: 10px; min-height: 180px; padding: 24px 0; }
+    .btn { padding: 10px 14px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Command</h1>
+  <p class="sub">An iconic ⌘K / Ctrl+K anime spotlight command palette.</p>
+  <div class="stage">
+    <button id="open-btn" class="btn pri" type="button">
+      <span>Open Command Palette</span>
+      <kbd class="keycap">⌘K</kbd>
+    </button>
+    <button id="filter-render" class="btn sub-btn" type="button">Filter “render”</button>
+    <button id="filter-delete" class="btn sub-btn danger-btn" type="button">Filter “delete”</button>
+
+    <sakuga-command id="el" shortcut="k" placeholder="Type a command or search Sakuga Studio...">
+      <optgroup label="Animation">
+        <option value="keyframe" data-icon="spark" data-shortcut="⌘N" data-desc="Insert a fresh keyframe on the active exposure sheet" data-keywords="draw cel genga frame">Insert Keyframe</option>
+        <option value="smear" data-icon="bolt" data-shortcut="⌘⇧S" data-desc="Generate an in-between motion smear bridge" data-keywords="motion blur speed bridge">Add Smear Frame</option>
+        <option value="preview" data-icon="play" data-shortcut="Space" data-desc="Loop sakuga cut playback at 24fps on twos" data-keywords="playback loop fps animatic">Play Cut at 24fps</option>
+        <option value="render" data-icon="download" data-shortcut="⌘E" data-desc="Export lossless PNG sequence and sprite sheet" data-keywords="export build movie mp4 png">Render Final Sequence</option>
+      </optgroup>
+      <optgroup label="Navigation">
+        <option value="layers" data-icon="layers" data-shortcut="G L" data-desc="Jump to cel stack, ink lines, and shadow passes" data-keywords="cel stack shadow ink pass">Jump to Cel Layers</option>
+        <option value="dopesheet" data-icon="compass" data-shortcut="G T" data-desc="Open dopesheet timing and spring curves" data-keywords="timeline xsheet timing curve">Open Dopesheet</option>
+        <option value="console" data-icon="terminal" data-shortcut="⌘J" data-desc="Inspect SakugaFX clock, springs, and frame log" data-keywords="debug devtools log fx">Toggle FX Console</option>
+        <option value="theme" data-icon="moon" data-shortcut="⌘⇧D" data-desc="Switch between paper daylight and studio ink" data-keywords="dark light color palette">Toggle Ink Mode</option>
+      </optgroup>
+      <optgroup label="Danger Zone">
+        <option value="delete-cache" data-icon="trash" data-shortcut="⌘⌫" data-desc="Wipe baked frame cache and orphaned render buffers" data-keywords="delete purge clear cache" data-danger>Delete Frame Cache</option>
+        <option value="reset-scene" data-icon="rocket" data-shortcut="⌘⇧⌫" data-desc="Discard unsaved cuts and reset studio workspace" data-keywords="delete nuke wipe reset workspace" data-danger>Reset Studio Scene</option>
+      </optgroup>
+    </sakuga-command>
+  </div>
+  <p class="hint">Press <code>⌘K</code> / <code>Ctrl+K</code> or click Open. Type to fuzzy-filter with caret dust, glide with <code>↑↓</code>, run with <code>↵</code>, or dismiss with <code>ESC</code>.</p>
+  <p class="said" aria-live="polite">Ready — press ⌘K or click Open Command Palette.</p>
+</main>
+<script src="command.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+const el = document.getElementById('el');
+
+document.getElementById('open-btn').addEventListener('click', () => el.show());
+document.getElementById('filter-render').addEventListener('click', () => {
+  el.show();
+  el.setQuery('render');
+});
+document.getElementById('filter-delete').addEventListener('click', () => {
+  el.show();
+  el.setQuery('delete');
+});
+
+el.addEventListener('open', () => say('Palette opened — type to search or use ↑↓ + Enter.'));
+el.addEventListener('sakuga:search', (e) => {
+  const { query, count } = e.detail;
+  say(query ? `Search "${query}" → ${count} match${count === 1 ? '' : 'es'}` : `Showing all ${count} commands`);
+});
+el.addEventListener('select', (e) => {
+  const { label, value, item } = e.detail;
+  say(`Ran ${item.danger ? '[DANGER] ' : ''}"${label}" (${value})`);
+});
+el.addEventListener('close', (e) => {
+  if (e.detail.reason !== 'select') say(`Closed (${e.detail.reason})`);
+});
+</script>
+</body>
+</html>

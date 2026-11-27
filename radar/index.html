@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakuga Radar</title>
+<style>
+  :root { --page: #ffffff; --text: #1d1a4a; --mute: #8580b0; }
+  html { overflow-x: clip; background: var(--page); }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--page); color: var(--text); font: 15px/1.45 -apple-system, "Helvetica Neue", "Segoe UI", sans-serif; overflow-x: clip; }
+  main { width: min(680px, 100vw - 32px); padding: 40px 0 60px; }
+  h1 { margin: 0; font: italic 800 26px/1.1 "Avenir Next", "Nunito", -apple-system, "Segoe UI", sans-serif; }
+  .sub { margin: 4px 0 0; color: var(--mute); }
+  .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; min-height: 360px; padding: 92px 0 22px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+  .preset { padding: 8px 13px; border: 2.5px solid #1d1a4a; border-radius: 12px; background: #fff; color: #1d1a4a; font: 700 13px/1.2 inherit; cursor: pointer; box-shadow: 3px 4px 0 #b8b3ff; transition: transform 0.08s ease; }
+  .preset:hover { transform: translateY(-1px); }
+  .preset:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 #b8b3ff; }
+  .preset.pri { background: #8f8df7; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .preset.hot { background: #ff5fa8; color: #fff; box-shadow: 3px 4px 0 #1d1a4a; }
+  .variants { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 24px; padding: 26px 0 12px; border-top: 2px dashed #e3e1f2; margin-top: 10px; }
+  .hint, .said { margin: 0 4px; color: var(--mute); }
+  .said { min-height: 1.45em; margin-top: 8px; font-size: 13px; }
+  .embed body { place-items: start center; min-height: 0; }
+  .embed h1, .embed .sub, .embed .hint, .embed .variants { display: none; }
+  .embed main { padding: 0; }
+  .embed .stage { padding: 54px 0 12px; min-height: 0; gap: 18px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Radar</h1>
+  <p class="sub">Cel-shaded anime power hexagon with halftone screentone fills, dual-series comparison, S-rank glints, and radial stat drag.</p>
+  <div class="stage">
+    <sakuga-radar id="el" show-ranks interactive label="Animator Power"></sakuga-radar>
+    <div class="controls">
+      <button id="btn-key" class="preset" type="button">Key Animator</button>
+      <button id="btn-vfx" class="preset" type="button">VFX Director</button>
+      <button id="btn-rival" class="preset pri" type="button">Compare Rival (2 Series)</button>
+      <button id="btn-power" class="preset hot" type="button">Power Up!</button>
+      <button id="btn-replay" class="preset" type="button">Replay</button>
+    </div>
+  </div>
+  <div class="variants">
+    <sakuga-radar id="el-sm" size="sm" tone="green" show-ranks label="Mecha Spec"></sakuga-radar>
+  </div>
+  <p class="hint">Hover or click any vertex for a callout, drag any node radially (or use arrow keys when focused) to tune stats, and cross 90+ for S-rank glints.</p>
+  <p class="said" aria-live="polite"></p>
+</main>
+<script src="radar.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+if (Q.get('embed') === '1') document.documentElement.classList.add('embed');
+const say = (t) => { document.querySelector('.said').textContent = t; };
+
+const AXES = ['Sakuga', 'Timing', 'Impact', 'Linework', 'Smear', 'Pacing'];
+const KEY_VALS = [96, 91, 82, 94, 78, 86];
+const VFX_VALS = [92, 80, 98, 74, 95, 85];
+
+const el = document.getElementById('el');
+el.items = AXES.map((label, i) => ({ label, value: KEY_VALS[i] }));
+
+const elSm = document.getElementById('el-sm');
+elSm.items = [
+  { label: 'Armor', value: 84 },
+  { label: 'Thrust', value: 94 },
+  { label: 'Output', value: 91 },
+  { label: 'Sensor', value: 76 },
+  { label: 'Sync', value: 88 },
+];
+
+document.getElementById('btn-key').addEventListener('click', () => {
+  el.items = AXES.map((label, i) => ({ label, value: KEY_VALS[i] }));
+  say('preset: Key Animator');
+});
+
+document.getElementById('btn-vfx').addEventListener('click', () => {
+  el.items = AXES.map((label, i) => ({ label, value: VFX_VALS[i] }));
+  say('preset: VFX Director');
+});
+
+document.getElementById('btn-rival').addEventListener('click', () => {
+  el.axes = AXES;
+  el.series = [
+    { name: 'Unit-01', tone: 'pri', values: KEY_VALS.slice() },
+    { name: 'Rival', tone: 'acc', values: VFX_VALS.slice() },
+  ];
+  say('compare: Unit-01 vs Rival (click legend pills to focus)');
+});
+
+document.getElementById('btn-power').addEventListener('click', () => {
+  el.powerUp();
+  say('powerUp() — DON!');
+});
+
+document.getElementById('btn-replay').addEventListener('click', () => {
+  el.replay();
+  say('replay() — spring burst entrance');
+});
+
+el.addEventListener('select', (e) => {
+  const d = e.detail;
+  say(`select: ${d.label} ${d.value}/${el.max} (Rank ${d.rank})`);
+});
+el.addEventListener('input', (e) => {
+  const d = e.detail;
+  say(`input: ${d.label} -> ${d.value}${el.unit} (Rank ${d.rank})`);
+});
+el.addEventListener('change', (e) => {
+  const d = e.detail;
+  say(`change: ${d.label} = ${d.value}${el.unit} (Rank ${d.rank})`);
+});
+el.addEventListener('sakuga:srank', (e) => {
+  const d = e.detail;
+  say(`sakuga:srank! ${d.label} hit ${d.value} — S RANK!`);
+});
+</script>
+</body>
+</html>
